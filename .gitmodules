@@ -1,0 +1,6 @@
+[submodule "angiogenesis"]
+	path = angiogenesis
+	url = https://github.com/TobiasDuswald/angiogenesis.git
+[submodule "biodynamo"]
+	path = biodynamo
+	url = https://github.com/BioDynaMo/biodynamo.git
