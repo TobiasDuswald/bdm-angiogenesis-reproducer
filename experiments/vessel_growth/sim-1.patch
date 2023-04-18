@@ -1,0 +1,386 @@
+diff --git a/bdm.json b/bdm.json
+index 16d29fe..0adcbd6 100644
+--- a/bdm.json
++++ b/bdm.json
+@@ -1,23 +1,63 @@
+ {
++  "bdm::OptimizationParam": {
++    "_typename": "bdm::OptimizationParam",
++    "algorithm": "",
++    "max_iterations": 100,
++    "params": [],
++    "repetition": 1
++  },
+   "bdm::Param": {
++    "_typename": "bdm::Param",
++    "backup_file": "",
++    "backup_interval": 1800,
+     "bound_space": 1,
++    "cache_neighbors": false,
++    "calculate_gradients": false,
++    "compute_target": "cpu",
++    "debug_numa": false,
++    "detect_static_agents": false,
+     "diffusion_boundary_condition": "closed",
+     "diffusion_method": "euler",
+     "environment": "uniform_grid",
++    "execution_order": 0,
+     "export_visualization": true,
+-    "min_bound": -800,
+-    "max_bound": 800,
++    "insitu_visualization": false,
++    "mapped_data_array_mode": 0,
++    "max_bound": 1300,
++    "mem_mgr_aligned_pages_shift": 5,
++    "mem_mgr_growth_rate": 1.1,
++    "mem_mgr_max_mem_per_thread_factor": 1,
++    "min_bound": -1300,
++    "minimize_memory_while_rebalancing": true,
++    "nanoflann_depth": 10,
++    "numerical_ode_solver": 1,
++    "opencl_debug": false,
++    "output_dir": "output",
++    "plot_memory_layout": false,
++    "preferred_gpu": -1,
++    "progress_bar_time_unit": "min",
++    "random_seed": 4357,
+     "remove_output_dir_contents": true,
++    "restore_file": "",
++    "root_visualization": false,
++    "scheduling_batch_size": 1000,
++    "show_simulation_step": 0,
++    "simulation_max_displacement": 3,
++    "simulation_time_step": 5,
+     "statistics": true,
++    "thread_safety_mechanism": 1,
++    "unibn_bucketsize": 16,
+     "unschedule_default_operations": [],
++    "use_bdm_mem_mgr": true,
+     "use_progress_bar": true,
+-    "simulation_time_step": 0.1,
++    "visualization_compress_pv_files": true,
++    "visualization_engine": "paraview",
++    "visualization_export_generate_pvsm": true,
+     "visualize_agents": {
+       "TumorCell": [
+         "cell_state_",
+         "diameter_",
+-        "radius_",
+-        "volume_"
++        "radius_"
+       ],
+       "Vessel": [],
+       "_typename": "map<string,set<string> >"
+@@ -26,17 +66,121 @@
+       {
+         "_typename": "bdm::Param::VisualizeDiffusion",
+         "concentration": true,
+-        "gradient": true,
++        "gradient": false,
+         "name": "VEGF"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "Nutrients"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "DOX"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "TRA"
+       }
+     ]
+   },
+   "bdm::SimParam": {
+     "_typename": "bdm::SimParam",
+-    "total_sim_time": 300,
+-    "visualization_interval": 5,
++    "action_radius_factor": 1.214,
++    "adhesion_scale_parameter": 0.0489,
++    "alpha_Q_D_N": 6.8e-06,
++    "alpha_Q_SG2_N": 0.000821666666666667,
++    "alpha_Q_SG2_TRA": 5,
++    "alpha_SG2_D_DOX": 0.001,
++    "alpha_SG2_SG2_DOX": 0.001,
++    "apical_growth_gradient_weight": 0.3,
++    "apical_growth_old_weight": 0.5,
++    "apical_growth_quotient_threshold": 0.001,
++    "apical_growth_random_weight": 0.2,
++    "apical_growth_speed": 0.066,
++    "base_rate_H_D": 0.0001,
++    "boundary_condition_dox": 0,
++    "boundary_condition_nutrients": 0,
++    "boundary_condition_tra": 0,
++    "boundary_condition_vegf": 0,
++    "cell_nuclear_radius": 5.296,
++    "cell_radius": 9.953,
++    "decay_rate_dox": 0,
++    "decay_rate_nutrients": 1e-05,
++    "decay_rate_tra": 0,
++    "decay_rate_vegf": 1e-05,
+     "default_vessel_length": 30,
+-    "secretion_rate_vegf": 0.03,
+-    "diffusion_vegf": 3.0
++    "diffusion_dox": 0,
++    "diffusion_nutrients": 0.833333333333333,
++    "diffusion_resolution_dox": 200,
++    "diffusion_resolution_nutrients": 200,
++    "diffusion_resolution_tra": 200,
++    "diffusion_resolution_vegf": 200,
++    "diffusion_tra": 0,
++    "diffusion_vegf": 3,
++    "dox_consumption_rate_tcell": 0,
++    "dox_supply_rate_vessel": 0,
++    "duration_apoptosis": 516,
++    "duration_cell_cycle": 1080,
++    "duration_growth_phase": 540,
++    "filled_volume": 0.64,
++    "force_calculation_frequency": 6,
++    "gamma_Q_D_N": 0.000408333333333333,
++    "hypoxic_threshold": 0.0538,
++    "initial_concentration_dox": 0,
++    "initial_concentration_nutrients": 0.0,
++    "initial_concentration_tra": 0,
++    "initial_concentration_vegf": 0,
++    "k_Q_D_N": 50,
++    "keep_dead_cells": true,
++    "max_speed": 10,
++    "min_dist_to_bifurcation": 80,
++    "min_dist_to_tip_cell": 150,
++    "num_cells": 1000,
++    "nutrient_consumption_rate_tcell": -320,
++    "nutrient_supply_rate_vessel": 13,
++    "random_vessel_exponent": 1,
++    "random_vessel_frequency_mean": 3.1415,
++    "random_vessel_frequency_std": 4,
++    "random_vessel_max_deviation": 0.2,
++    "random_vessel_num_modes": 10,
++    "repulsive_scale_parameter": 10,
++    "sprouting_rate": 0.001,
++    "threshold_Q_D_N": 0.0538,
++    "threshold_Q_SG2_N": 0.0538,
++    "threshold_SG2_D_DOX": 0.1,
++    "threshold_SG2_SG2_DOX": 0.1,
++    "tip_cell_finder_update_frequency": 1,
++    "total_sim_time": 20000,
++    "tra_consumption_rate_tcell": -125,
++    "tra_supply_rate_vessel": 0,
++    "vegf_consumption_rate_vessel": 0,
++    "vegf_grad_threshold_apical_growth": 1e-05,
++    "vegf_supply_rate_tcell": 100,
++    "vegf_threshold_sprouting": 0.001,
++    "verify_continuum_values": false,
++    "viscosity": 2,
++    "visualization_interval": 100,
++    "zeta_H_D_DOX": 20,
++    "zeta_H_D_TRA": 20,
++    "zeta_Q_D_DOX": 30,
++    "zeta_Q_D_TRA": 30
++  },
++  "bdm::neuroscience::Param": {
++    "_typename": "bdm::neuroscience::Param",
++    "neurite_default_actual_length": 1,
++    "neurite_default_adherence": 0.1,
++    "neurite_default_density": 1,
++    "neurite_default_diameter": 1,
++    "neurite_default_spring_constant": 10,
++    "neurite_default_tension": 0,
++    "neurite_max_length": 15,
++    "neurite_min_length": 2,
++    "neurite_minimial_bifurcation_length": 0
+   }
+ }
+diff --git a/pysrc/plot-data.py b/pysrc/plot-data.py
+index 2f3cfbc..7067c15 100644
+--- a/pysrc/plot-data.py
++++ b/pysrc/plot-data.py
+@@ -118,7 +118,7 @@ def plot_data(N, data, results_dir):
+         fig.set_dpi(500)
+ 
+         # Plot the data
+-        ax.plot(data.index, data["mean_{}".format(i)], label="mean")
++        ax.plot(data.index, data["mean_{}".format(i)], label="mean", marker="o", markersize=3)
+         ax.fill_between(
+             data.index,
+             data["lower_{}".format(i)],
+diff --git a/src/angiogenesis_simulation.cc b/src/angiogenesis_simulation.cc
+index 530ee88..cd16b30 100644
+--- a/src/angiogenesis_simulation.cc
++++ b/src/angiogenesis_simulation.cc
+@@ -125,7 +125,6 @@ int Simulate(int argc, const char** argv) {
+   // 2. Define parameters and initialize simulation
+   // ---------------------------------------------------------------------------
+   auto set_param = [](Param* param) {
+-    param->calculate_gradients = true;
+     param->visualization_interval = static_cast<uint32_t>(std::floor(
+         static_cast<double>(param->Get<SimParam>()->visualization_interval) /
+         param->simulation_time_step));
+diff --git a/src/modules/vessel.cc b/src/modules/vessel.cc
+index 106ce9b..ab72b7c 100644
+--- a/src/modules/vessel.cc
++++ b/src/modules/vessel.cc
+@@ -28,16 +28,60 @@ void Vessel::RunDiscretization() {
+     // nutrients. We do not want our initial vasculature to supply nutrients.
+     return;
+   }
+-  Base::RunDiscretization();
++  // -------------------------------------------------------------------------
++  // Modified discretization function from neurite_element.h
++  // -------------------------------------------------------------------------
++  if (!IsTerminal()) {
++    // if the neurite element is not terminal, we do not split it
++    return;
++  }
++  // auto& mother = GetMother();
++  // // if the mother is a neuron soma, we do not split it
++  // auto* mother_agentma =
++  // dynamic_cast<neuroscience::NeuronSoma*>(mother.Get()); if (mother_agentma
++  // != nullptr) {
++  //   return;
++  // }
++  // auto* mother_neurite = dynamic_cast<NeuriteElement*>(mother.Get());
++  constexpr double kMaxLength = 10;
++  if (GetActualLength() > kMaxLength) {
++    auto* new_vessel = SplitVessel(0.1);
++    // Set the diameter of the new neurite
++    constexpr double kMinDiameter = 5;
++    constexpr double kMaxDiameter = 20;
++    constexpr double kDiameterDecay = 0.98;
++    double diameter = GetDiameter() * kDiameterDecay;
++    diameter = std::max(diameter, kMinDiameter);
++    diameter = std::min(diameter, kMaxDiameter);
++    new_vessel->SetDiameter(diameter);
++    new_vessel->UpdateVolume();
++    // std::cout << "Vessel split" << std::endl;
++  }
+ }
+ 
+ bool Vessel::IsTipCell() const { return (IsTerminal() && can_grow_); }
+ 
++bool Vessel::IsStalkCell() const {
++  if (IsTerminal()) {
++    return false;
++  }
++  // Vessel must have a left daughter; Check if it is a tip cell
++  const auto* daughter = dynamic_cast<const Vessel*>(GetDaughterLeft().Get());
++  return daughter->IsTipCell();
++}
++
+ double Vessel::GetSurfaceArea() const {
+   // Vessels are assumed to be cylindrical.
+   return Math::kPi * GetDiameter() * GetActualLength();
+ }
+ 
++Vessel* Vessel::SplitVessel(real_t distal_portion) {
++  neuroscience::SplitNeuriteElementEvent event(distal_portion);
++  CreateNewAgents(event, {this});
++  // return bdm_static_cast<Vessel*>(event.new_agent[0]);
++  return bdm_static_cast<Vessel*>(event.existing_agent);
++}
++
+ void SproutingAngiogenesis::Initialize(const NewAgentEvent& event) {
+   Base::Initialize(event);
+   can_branch_ = false;
+@@ -147,8 +191,19 @@ void SproutingAngiogenesis::Run(Agent* agent) {
+     Double3 sprouting_direction = VectorOnConeAroundAxis(gradient, phi, theta);
+ 
+     // Branch vessel
+-    dendrite->Branch(dendrite->GetDiameter(), sprouting_direction,
+-                     dendrite->GetActualLength() / 2);
++    auto* new_neurite =
++        dendrite->Branch(dendrite->GetDiameter(), sprouting_direction,
++                         dendrite->GetActualLength() / 2);
++
++    // Set the diameter of the new neurite
++    constexpr double kMinDiameter = 5;
++    constexpr double kMaxDiameter = 20;
++    constexpr double kDiameterDecay = 0.8;
++
++    double new_diameter = dendrite->GetDiameter() * kDiameterDecay;
++    new_diameter = std::max(new_diameter, kMinDiameter);
++    new_diameter = std::min(new_diameter, kMaxDiameter);
++    new_neurite->SetDiameter(new_diameter);
+   }
+ }
+ 
+@@ -183,6 +238,12 @@ void ApicalGrowth::Run(Agent* agent) {
+   if (gradient.Norm() < sparam->vegf_grad_threshold_apical_growth) {
+     return;
+   }
++  if (gradient.Norm() > 0.016) {
++    // This indicates that we're now in the tumor region, stop growth. No longer
++    // counted as tip cell.
++    auto* vessel = dynamic_cast<Vessel*>(agent);
++    vessel->ProhibitGrowth();
++  }
+ 
+   /// 3. If vessel is close to an Tumor cell, we interrupt the growth as well
+   double vegf_concentration = dg_guide_->GetValue(dendrite->GetPosition());
+@@ -217,8 +278,8 @@ void LineContinuumInteraction::Initialize(const NewAgentEvent& event) {
+ void LineContinuumInteraction::Run(Agent* agent) {
+   auto* vessel = dynamic_cast<Vessel*>(agent);
+ 
+-  // If the behaviour is assigned to a vessel and it is not part of the initial
+-  // vascular network, we do supply the nutrients.
++  // If the behaviour is assigned to a vessel and it is not part of the
++  // initial vascular network, we do supply the nutrients.
+   if (vessel) {
+     // If we secrete and don't consume, then we only consider vessels that
+     // can grow.
+@@ -226,6 +287,11 @@ void LineContinuumInteraction::Run(Agent* agent) {
+       return;
+     }
+ 
++    // Exclude tip and stalk cells
++    if (vessel->IsTipCell() || vessel->IsStalkCell()) {
++      return;
++    }
++
+     // Get the pointers to the diffusion grids: nutrients, VEGF, DOX, and TRA
+     auto* sim = Simulation::GetActive();
+     const auto* rm = sim->GetResourceManager();
+@@ -265,9 +331,9 @@ void LineContinuumInteraction::Run(Agent* agent) {
+ 
+     // Problem: If the vessel grows, this will not be updated.
+     if (!init_) {
+-      // In the first step, we define how granular the supply is. We do this by
+-      // demanding that the distance between two sampling points is roughly half
+-      // the box length of the discretization. Note that we compute the
++      // In the first step, we define how granular the supply is. We do this
++      // by demanding that the distance between two sampling points is roughly
++      // half the box length of the discretization. Note that we compute the
+       // the number of sample points here and not in the constructor because
+       // the BoxLength is not initialized in the DiffusionGrid constructor.
+       init_ = true;
+diff --git a/src/modules/vessel.h b/src/modules/vessel.h
+index 88123ae..fd58e3b 100644
+--- a/src/modules/vessel.h
++++ b/src/modules/vessel.h
+@@ -49,6 +49,9 @@ class Vessel : public NeuriteElement {
+   /// Returns if the vessel is a tip cell
+   bool IsTipCell() const;
+ 
++  /// Returns if the vessel is a stalk cell
++  bool IsStalkCell() const;
++
+   /// Returns the surface area of the cylinder
+   double GetSurfaceArea() const;
+ 
+@@ -56,6 +59,9 @@ class Vessel : public NeuriteElement {
+   /// Parameter to decide if a vessel compartment can grow towards a higher
+   /// VEGF concentration (used to fix initial vessel configuration)
+   bool can_grow_{true};
++
++  // Split the vessel into two parts at the given position
++  Vessel* SplitVessel(real_t distal_portion);
+ };
+ 
+ /// Behaviour to create a new bifurcation if external VEGF concentarion is
