@@ -1,0 +1,312 @@
+diff --git a/bdm.json b/bdm.json
+index 16d29fe..5494166 100644
+--- a/bdm.json
++++ b/bdm.json
+@@ -1,23 +1,63 @@
+ {
++  "bdm::OptimizationParam": {
++    "_typename": "bdm::OptimizationParam",
++    "algorithm": "",
++    "max_iterations": 100,
++    "params": [],
++    "repetition": 1
++  },
+   "bdm::Param": {
++    "_typename": "bdm::Param",
++    "backup_file": "",
++    "backup_interval": 1800,
+     "bound_space": 1,
++    "cache_neighbors": false,
++    "calculate_gradients": false,
++    "compute_target": "cpu",
++    "debug_numa": false,
++    "detect_static_agents": false,
+     "diffusion_boundary_condition": "closed",
+     "diffusion_method": "euler",
+     "environment": "uniform_grid",
++    "execution_order": 0,
+     "export_visualization": true,
+-    "min_bound": -800,
+-    "max_bound": 800,
++    "insitu_visualization": false,
++    "mapped_data_array_mode": 0,
++    "max_bound": 1300,
++    "mem_mgr_aligned_pages_shift": 5,
++    "mem_mgr_growth_rate": 1.1,
++    "mem_mgr_max_mem_per_thread_factor": 1,
++    "min_bound": -1300,
++    "minimize_memory_while_rebalancing": true,
++    "nanoflann_depth": 10,
++    "numerical_ode_solver": 1,
++    "opencl_debug": false,
++    "output_dir": "output",
++    "plot_memory_layout": false,
++    "preferred_gpu": -1,
++    "progress_bar_time_unit": "min",
++    "random_seed": 4357,
+     "remove_output_dir_contents": true,
++    "restore_file": "",
++    "root_visualization": false,
++    "scheduling_batch_size": 1000,
++    "show_simulation_step": 0,
++    "simulation_max_displacement": 3,
++    "simulation_time_step": 30,
+     "statistics": true,
++    "thread_safety_mechanism": 1,
++    "unibn_bucketsize": 16,
+     "unschedule_default_operations": [],
++    "use_bdm_mem_mgr": true,
+     "use_progress_bar": true,
+-    "simulation_time_step": 0.1,
++    "visualization_compress_pv_files": true,
++    "visualization_engine": "paraview",
++    "visualization_export_generate_pvsm": true,
+     "visualize_agents": {
+       "TumorCell": [
+         "cell_state_",
+         "diameter_",
+-        "radius_",
+-        "volume_"
++        "radius_"
+       ],
+       "Vessel": [],
+       "_typename": "map<string,set<string> >"
+@@ -26,17 +66,121 @@
+       {
+         "_typename": "bdm::Param::VisualizeDiffusion",
+         "concentration": true,
+-        "gradient": true,
++        "gradient": false,
+         "name": "VEGF"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "Nutrients"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "DOX"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "TRA"
+       }
+     ]
+   },
+   "bdm::SimParam": {
+     "_typename": "bdm::SimParam",
+-    "total_sim_time": 300,
+-    "visualization_interval": 5,
++    "action_radius_factor": 1.214,
++    "adhesion_scale_parameter": 0.0489,
++    "alpha_Q_D_N": 6.8e-06,
++    "alpha_Q_SG2_N": 0.000821666666666667,
++    "alpha_Q_SG2_TRA": 5,
++    "alpha_SG2_D_DOX": 0.001,
++    "alpha_SG2_SG2_DOX": 0.001,
++    "apical_growth_gradient_weight": 0.3,
++    "apical_growth_old_weight": 0.5,
++    "apical_growth_quotient_threshold": 0.001,
++    "apical_growth_random_weight": 0.2,
++    "apical_growth_speed": 0.033,
++    "base_rate_H_D": 0.00001,
++    "boundary_condition_dox": 0,
++    "boundary_condition_nutrients": 0,
++    "boundary_condition_tra": 0,
++    "boundary_condition_vegf": 0,
++    "cell_nuclear_radius": 5.296,
++    "cell_radius": 9.953,
++    "decay_rate_dox": 0,
++    "decay_rate_nutrients": 1e-05,
++    "decay_rate_tra": 0,
++    "decay_rate_vegf": 1e-05,
+     "default_vessel_length": 30,
+-    "secretion_rate_vegf": 0.03,
+-    "diffusion_vegf": 3.0
++    "diffusion_dox": 0.7083,
++    "diffusion_nutrients": 0.833333333333333,
++    "diffusion_resolution_dox": 200,
++    "diffusion_resolution_nutrients": 200,
++    "diffusion_resolution_tra": 200,
++    "diffusion_resolution_vegf": 200,
++    "diffusion_tra": 0.09,
++    "diffusion_vegf": 0.175,
++    "dox_consumption_rate_tcell": 0,
++    "dox_supply_rate_vessel": 30,
++    "duration_apoptosis": 516,
++    "duration_cell_cycle": 1080,
++    "duration_growth_phase": 540,
++    "filled_volume": 0.64,
++    "force_calculation_frequency": 6,
++    "gamma_Q_D_N": 0.000408333333333333,
++    "hypoxic_threshold": 0.0538,
++    "initial_concentration_dox": 0,
++    "initial_concentration_nutrients": 0.0,
++    "initial_concentration_tra": 0,
++    "initial_concentration_vegf": 0,
++    "k_Q_D_N": 50,
++    "keep_dead_cells": true,
++    "max_speed": 10,
++    "min_dist_to_bifurcation": 80,
++    "min_dist_to_tip_cell": 150,
++    "num_cells": 1000,
++    "nutrient_consumption_rate_tcell": -50,
++    "nutrient_supply_rate_vessel": 17,
++    "random_vessel_exponent": 1,
++    "random_vessel_frequency_mean": 3.1415,
++    "random_vessel_frequency_std": 4,
++    "random_vessel_max_deviation": 0.2,
++    "random_vessel_num_modes": 10,
++    "repulsive_scale_parameter": 10,
++    "sprouting_rate": 0.001,
++    "threshold_Q_D_N": 0.00538,
++    "threshold_Q_SG2_N": 0.0538,
++    "threshold_SG2_D_DOX": 0.1,
++    "threshold_SG2_SG2_DOX": 0.1,
++    "tip_cell_finder_update_frequency": 1,
++    "total_sim_time": 100000,
++    "tra_consumption_rate_tcell": -125,
++    "tra_supply_rate_vessel": 100,
++    "vegf_consumption_rate_vessel": -4,
++    "vegf_grad_threshold_apical_growth": 1e-05,
++    "vegf_supply_rate_tcell": 100,
++    "vegf_threshold_sprouting": 0.001,
++    "verify_continuum_values": false,
++    "viscosity": 2,
++    "visualization_interval": 1000,
++    "zeta_H_D_DOX": 200,
++    "zeta_H_D_TRA": 200,
++    "zeta_Q_D_DOX": 200,
++    "zeta_Q_D_TRA": 200
++  },
++  "bdm::neuroscience::Param": {
++    "_typename": "bdm::neuroscience::Param",
++    "neurite_default_actual_length": 1,
++    "neurite_default_adherence": 0.1,
++    "neurite_default_density": 1,
++    "neurite_default_diameter": 1,
++    "neurite_default_spring_constant": 10,
++    "neurite_default_tension": 0,
++    "neurite_max_length": 15,
++    "neurite_min_length": 2,
++    "neurite_minimial_bifurcation_length": 0
+   }
+ }
+diff --git a/pysrc/plot-data.py b/pysrc/plot-data.py
+index 2f3cfbc..7067c15 100644
+--- a/pysrc/plot-data.py
++++ b/pysrc/plot-data.py
+@@ -118,7 +118,7 @@ def plot_data(N, data, results_dir):
+         fig.set_dpi(500)
+ 
+         # Plot the data
+-        ax.plot(data.index, data["mean_{}".format(i)], label="mean")
++        ax.plot(data.index, data["mean_{}".format(i)], label="mean", marker="o", markersize=3)
+         ax.fill_between(
+             data.index,
+             data["lower_{}".format(i)],
+diff --git a/src/angiogenesis_simulation.cc b/src/angiogenesis_simulation.cc
+index cd16b30..2268cf7 100644
+--- a/src/angiogenesis_simulation.cc
++++ b/src/angiogenesis_simulation.cc
+@@ -352,10 +352,24 @@ int Simulate(int argc, const char** argv) {
+   // Test if correct number of Agents were initialized
+   std::cout << "Agents im Simulation: " << rm->GetNumAgents() << "\n";
+ 
+-  // Run simulation for a defined number of timesteps
++  // 12.1 Run simulation for a defined number of timesteps to grow vasculature
+   u_int64_t time_steps{static_cast<u_int64_t>(
+       ceil(sparam->total_sim_time / param->simulation_time_step))};
+   scheduler->Simulate(time_steps);
++
++  // 12.2 Iterate over all agents and remove sprouting and growth behavior,
++  // i.e. freeze vessels and continue growing tumor
++  rm->ForEachAgent([](Agent* agent) {
++    auto* vessel = dynamic_cast<Vessel*>(agent);
++    if (vessel) {
++      vessel->RemoveBehavior(vessel->GetAllBehaviors()[0]);  // Remove sprouting
++      vessel->RemoveBehavior(vessel->GetAllBehaviors()[0]);  // Remove growth
++    }
++  });
++  // scheduler->Simulate(std::ceil(time_steps / 2.0));
++  // scheduler->Simulate(std::ceil(1.3 * time_steps));
++  scheduler->Simulate(time_steps);
++
+   std::cout << "Simulation completed successfully!" << std::endl;
+ 
+   // Save timeseries data
+@@ -481,6 +495,11 @@ double PlaceStraightVessel(
+                                         compartment_length);
+   vessel_compartment_1->SetDiameter(diameter);
+   vessel_compartment_1->ProhibitGrowth();
++  vessel_compartment_1->AddBehavior(new SproutingAngiogenesis());
++  vessel_compartment_1->AddBehavior(new ApicalGrowth());
++  vessel_compartment_1->AddBehavior(new LineContinuumInteraction(
++      sparam->nutrient_supply_rate_vessel, sparam->vegf_consumption_rate_vessel,
++      sparam->dox_supply_rate_vessel, sparam->tra_supply_rate_vessel));
+ 
+   Vessel* vessel_compartment_2{nullptr};
+   for (int i = 1; i < n_compartments; i++) {
+diff --git a/src/modules/tumor_cell.cc b/src/modules/tumor_cell.cc
+index 1fda9ed..5b051b6 100644
+--- a/src/modules/tumor_cell.cc
++++ b/src/modules/tumor_cell.cc
+@@ -187,6 +187,12 @@ Double3 TumorCell::CalculateDisplacement(const InteractionForce* force,
+   displacement = velocity * param->simulation_time_step *
+                  sparam->force_calculation_frequency;
+   LimitDisplacementAtBoundary(displacement);
++
++  // Limit dislacement to at most 20
++  if (displacement.Norm() > 20) {
++    displacement *= 20 / displacement.Norm();
++  }
++
+   return displacement;
+ }
+ 
+diff --git a/src/modules/vessel.cc b/src/modules/vessel.cc
+index 72db909..43abda8 100644
+--- a/src/modules/vessel.cc
++++ b/src/modules/vessel.cc
+@@ -230,7 +230,7 @@ void ApicalGrowth::Run(Agent* agent) {
+   if (gradient.Norm() < sparam->vegf_grad_threshold_apical_growth) {
+     return;
+   }
+-  if (gradient.Norm() > 0.016) {
++  if (gradient.Norm() > 0.022) {
+     // This indicates that we're now in the tumor region, stop growth. No longer
+     // counted as tip cell.
+     auto* vessel = dynamic_cast<Vessel*>(agent);
+@@ -354,6 +354,26 @@ void LineContinuumInteraction::Run(Agent* agent) {
+     for (int j = 0; j < 4; j++) {
+       auto* dg = dg_array[j];
+       const double rate = interaction_rate_[j];
++      if (j == 2) {
++        // DOX is only supplied between specific times
++        constexpr double start_time = 106 * 24 * 60;
++        constexpr double end_time = 108 * 24 * 60;
++        const double time =
++            Simulation::GetActive()->GetScheduler()->GetSimulatedTime();
++        if (time < start_time || time > end_time) {
++          continue;
++        }
++      }
++      if (j == 3) {
++        // TRA is only supplied between specific times
++        constexpr double start_time = 102 * 24 * 60;
++        constexpr double end_time = 104 * 24 * 60;
++        const double time =
++            Simulation::GetActive()->GetScheduler()->GetSimulatedTime();
++        if (time < start_time || time > end_time) {
++          continue;
++        }
++      }
+       if (rate == 0) {
+         continue;
+       }
