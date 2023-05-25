@@ -94,7 +94,7 @@ function reset_repository(){
     git -C "$1" reset --hard
     git -C "$1" clean -fd
     git -C "$1" checkout master
-    git -C "$1" pull
+    # git -C "$1" pull
 }
 
 # This function takes to arguments:
