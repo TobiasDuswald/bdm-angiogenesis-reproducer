@@ -1,0 +1,144 @@
+diff --git a/bdm.json b/bdm.json
+index 16d29fe..4d23f5f 100644
+--- a/bdm.json
++++ b/bdm.json
+@@ -5,13 +5,14 @@
+     "diffusion_method": "euler",
+     "environment": "uniform_grid",
+     "export_visualization": true,
+-    "min_bound": -800,
+-    "max_bound": 800,
+-    "remove_output_dir_contents": true,
++    "min_bound": -500,
++    "max_bound": 500,
++    "remove_output_dir_contents": false,
++    "output_dir": "output",
+     "statistics": true,
+-    "unschedule_default_operations": [],
+     "use_progress_bar": true,
+-    "simulation_time_step": 0.1,
++    "unschedule_default_operations": [],
++    "simulation_time_step": 1,
+     "visualize_agents": {
+       "TumorCell": [
+         "cell_state_",
+@@ -24,19 +25,35 @@
+     },
+     "visualize_diffusion": [
+       {
+-        "_typename": "bdm::Param::VisualizeDiffusion",
+         "concentration": true,
+-        "gradient": true,
++        "gradient": false,
+         "name": "VEGF"
++      },
++      {
++        "concentration": true,
++        "gradient": false,
++        "name": "Nutrients"
+       }
+     ]
+   },
+   "bdm::SimParam": {
+     "_typename": "bdm::SimParam",
+-    "total_sim_time": 300,
+-    "visualization_interval": 5,
+-    "default_vessel_length": 30,
++    "total_sim_time": 210000,
++    "verify_continuum_values": false,
++    "visualization_interval": 3000,
++    "default_vessel_length": 10,
+     "secretion_rate_vegf": 0.03,
+-    "diffusion_vegf": 3.0
++    "min_dist_to_tip_cell": 150,
++    "nutrient_consumption_rate_tcell": -0.00012, 
++    "diffusion_vegf": 3.0,
++    "diffusion_resolution_nutrients": 80,
++    "diffusion_resolution_vegf": 80,
++    "min_dist_to_bifurcation": 30,
++    "hypoxic_threshold": 0.11,
++    "initialize_vasculature": false,
++    "keep_dead_cells": false,
++    "lower_bound": -800,
++    "upper_bound": 800,
++    "base_rate_H_D": 0.00001 
+   }
+ }
+diff --git a/src/angiogenesis_simulation.cc b/src/angiogenesis_simulation.cc
+index fdc68d6..a19cd5f 100644
+--- a/src/angiogenesis_simulation.cc
++++ b/src/angiogenesis_simulation.cc
+@@ -180,7 +180,9 @@ int Simulate(int argc, const char** argv) {
+       Substances::kNutrients, "Nutrients", sparam->diffusion_nutrients,
+       sparam->decay_rate_nutrients, sparam->diffusion_resolution_nutrients);
+   auto SetInitialValuesGridNutrients = [&sparam](double x, double y, double z) {
+-    return sparam->hypoxic_threshold * 2;
++    return sparam->initial_concentration_nutrients;
++    // return sparam->hypoxic_threshold * 2;
++    // return sparam->hypoxic_threshold * 0.5;
+   };
+   ModelInitializer::InitializeSubstance(Substances::kNutrients,
+                                         SetInitialValuesGridNutrients);
+@@ -276,6 +278,9 @@ int Simulate(int argc, const char** argv) {
+   auto* op = scheduler->GetOps("mechanical forces")[0];
+   auto* force_implementation = op->GetImplementation<MechanicalForcesOp>();
+   force_implementation->SetInteractionForce(custom_force);
++  
++  auto* lbop = scheduler->GetOps("load balancing")[0];
++  lbop->frequency_ = 200;
+ 
+   // ---------------------------------------------------------------------------
+   // 6. Specific fix for force and environment combination
+diff --git a/src/modules/transition_probabilities.cc b/src/modules/transition_probabilities.cc
+index b221c0e..15ebe28 100644
+--- a/src/modules/transition_probabilities.cc
++++ b/src/modules/transition_probabilities.cc
+@@ -42,7 +42,8 @@ double ComputeProbability_Q_To_D(const double nutrients, const double tra,
+ 
+ double ComputeProbability_H_To_D(const double tra, const double dox,
+                                  const double delta_t, const SimParam* sparam) {
+-  return P_H_D_DOX(dox, delta_t, sparam) * P_H_D_TRA(tra, delta_t, sparam);
++  return sparam->base_rate_H_D * delta_t * P_H_D_DOX(dox, delta_t, sparam) *
++         P_H_D_TRA(tra, delta_t, sparam);
+ };
+ 
+ double P_Q_SG2_N(const double nutrients, const double delta_t,
+@@ -106,7 +107,7 @@ double P_H_D_DOX(const double dox, const double delta_t,
+   //     dox, sparam->threshold_H_D_DOX, sparam->alpha_H_D_DOX,
+   //     sparam->k_H_D_DOX,
+   //     delta_t, sparam->gamma_H_D_DOX);
+-  return (dox > 0.01) ? 1 : 0;
++  return 1 + dox;
+ };
+ 
+ double P_H_D_TRA(const double tra, const double delta_t,
+@@ -115,7 +116,7 @@ double P_H_D_TRA(const double tra, const double delta_t,
+   //     tra, sparam->threshold_H_D_TRA, sparam->alpha_H_D_TRA,
+   //     sparam->k_H_D_TRA,
+   //     delta_t, sparam->gamma_H_D_TRA);
+-  return (tra > 0.01) ? 1 : 0;
++  return 1 + tra;
+ };
+ 
+ }  // namespace bdm
+diff --git a/src/sim_param.h b/src/sim_param.h
+index 1ff0cd8..f9d5b9e 100644
+--- a/src/sim_param.h
++++ b/src/sim_param.h
+@@ -165,6 +165,7 @@ struct SimParam : public ParamGroup {
+ 
+   // Probability parameters for the transition from H to D modulated by the
+   // drug DOX
++  double base_rate_H_D{0.001};
+   double threshold_H_D_DOX{0.1};
+   double gamma_H_D_DOX{1.0};
+   double alpha_H_D_DOX{0.1};
+@@ -237,7 +238,7 @@ struct SimParam : public ParamGroup {
+ 
+   // Initial value of the nutrients (glucose) concentration, uniform over grid
+   // (unit [1])
+-  double initial_concentration_nutrients{0.5};
++  double initial_concentration_nutrients{0.26};
+ 
+   // Diffusion coefficient for nutrients (glucose) (unit [\mu m / min])
+   double diffusion_nutrients{50.0 / 60.0};
