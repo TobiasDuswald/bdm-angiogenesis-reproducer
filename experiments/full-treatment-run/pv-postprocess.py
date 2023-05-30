@@ -180,7 +180,7 @@ renderView1.Update()
 renderView1.Update()
 
 # reset view to fit data
-if not is_apple:
+if is_apple:
     renderView1.ResetCamera(False)
 
 # set scalar coloring
@@ -249,7 +249,7 @@ diameter_LUT.InvertTransferFunction()
 animationScene1.GoToFirst()
 
 # Properties modified on renderView1
-if not is_apple:
+if is_apple:
     renderView1.UseColorPaletteForBackground = 0
 
 # Properties modified on renderView1
