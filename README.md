@@ -14,3 +14,18 @@ runs, and postprocessing in convenient bash scripts to simplify reproducibility.
 
 To reproduce an experiment, simply execute the `run.sh` in 
 `experiments/<some-experiment>/`.
+
+## Known issues
+
+If you clone this repository, it might happen that the submodules are not
+cloned. E.g., if you
+```bash
+git pull https://github.com/TobiasDuswald/bdm-angiogenesis-reproducer.git
+cd bdm-angiogenesis-reproducer
+ls angiogenesis
+```
+will show an empty directory. You must make sure that the submodules are loaded,
+e.g., run
+```bash
+git submodule update --init --force --remote
+```
