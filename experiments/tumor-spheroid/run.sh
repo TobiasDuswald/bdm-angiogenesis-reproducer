@@ -75,6 +75,7 @@ replace "scripts/visualize-tumor-cells.sh" "COLORBAR=1" "COLORBAR=0"
 # Copy the results to the results directory
 copy_results $SIMDIR/output/angiogenesis $DIR/results
 cd $DIR
+python $DIR/postprocess.py
 
 # -----------------------------------------------------------------------------
 # 6. Cleanup
