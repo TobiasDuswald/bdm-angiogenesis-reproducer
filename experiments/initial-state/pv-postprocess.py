@@ -138,7 +138,8 @@ tumorCellsDisplay.DiffuseColor = [0.0, 0.6666666666666666, 0.0]
 SetActiveSource(vessels)
 
 # reset view to fit data
-renderView1.ResetCamera(True)
+if is_apple:
+    renderView1.ResetCamera(True)
 
 # Properties modified on renderView1
 if is_apple:
@@ -234,8 +235,7 @@ SaveScreenshot(folder + '/view1.png', renderView1, ImageResolution=[2564, 1954],
     StereoMode='No change',
     TransparentBackground=0, 
     # PNG options
-    CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    CompressionLevel='5')
 
 # reset view to fit data
 if is_apple:
@@ -257,8 +257,7 @@ SaveScreenshot(folder + '/view2.png', renderView1, ImageResolution=[2564, 1954],
     StereoMode='No change',
     TransparentBackground=0, 
     # PNG options
-    CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    CompressionLevel='5')
 
 # reset view to fit data
 if is_apple:
@@ -280,8 +279,7 @@ SaveScreenshot(folder + '/view3.png', renderView1, ImageResolution=[2564, 1954],
     StereoMode='No change',
     TransparentBackground=0, 
     # PNG options
-    CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    CompressionLevel='5')
 
 # reset view to fit data
 if is_apple:
@@ -303,8 +301,7 @@ SaveScreenshot(folder + '/view4.png', renderView1, ImageResolution=[2564, 1954],
     StereoMode='No change',
     TransparentBackground=0, 
     # PNG options
-    CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    CompressionLevel='5')
 
 # reset view to fit data
 if is_apple:
@@ -325,8 +322,7 @@ SaveScreenshot(folder + '/view5.png', renderView1, ImageResolution=[2564, 1954],
     StereoMode='No change',
     TransparentBackground=0, 
     # PNG options
-    CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    CompressionLevel='5')
 
 # reset view to fit data
 if is_apple:
@@ -347,8 +343,7 @@ SaveScreenshot(folder + '/view6.png', renderView1, ImageResolution=[2564, 1954],
     StereoMode='No change',
     TransparentBackground=0, 
     # PNG options
-    CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    CompressionLevel='5')
 
 #================================================================
 # addendum: following script captures some of the application
