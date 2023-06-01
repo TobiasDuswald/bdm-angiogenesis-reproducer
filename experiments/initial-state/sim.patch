@@ -1,8 +1,8 @@
 diff --git a/bdm.json b/bdm.json
-index 16d29fe..b688aec 100644
+index 16d29fe..ef5aeb1 100644
 --- a/bdm.json
 +++ b/bdm.json
-@@ -1,23 +1,63 @@
+@@ -1,42 +1,160 @@
  {
 +  "bdm::OptimizationParam": {
 +    "_typename": "bdm::OptimizationParam",
@@ -71,33 +71,16 @@ index 16d29fe..b688aec 100644
        ],
        "Vessel": [],
        "_typename": "map<string,set<string> >"
-@@ -26,17 +66,121 @@
-       {
-         "_typename": "bdm::Param::VisualizeDiffusion",
-         "concentration": true,
+-    },
+-    "visualize_diffusion": [
+-      {
+-        "_typename": "bdm::Param::VisualizeDiffusion",
+-        "concentration": true,
 -        "gradient": true,
-+        "gradient": false,
-         "name": "VEGF"
-+      },
-+      {
-+        "_typename": "bdm::Param::VisualizeDiffusion",
-+        "concentration": true,
-+        "gradient": false,
-+        "name": "Nutrients"
-+      },
-+      {
-+        "_typename": "bdm::Param::VisualizeDiffusion",
-+        "concentration": true,
-+        "gradient": false,
-+        "name": "DOX"
-+      },
-+      {
-+        "_typename": "bdm::Param::VisualizeDiffusion",
-+        "concentration": true,
-+        "gradient": false,
-+        "name": "TRA"
-       }
-     ]
+-        "name": "VEGF"
+-      }
+-    ]
++    }
    },
    "bdm::SimParam": {
      "_typename": "bdm::SimParam",
@@ -170,7 +153,7 @@ index 16d29fe..b688aec 100644
 +    "threshold_SG2_D_DOX": 0.1,
 +    "threshold_SG2_SG2_DOX": 0.1,
 +    "tip_cell_finder_update_frequency": 1,
-+    "total_sim_time": 100,
++    "total_sim_time": 10000,
 +    "tra_consumption_rate_tcell": -125,
 +    "tra_supply_rate_vessel": 100,
 +    "vegf_consumption_rate_vessel": -4,
@@ -179,7 +162,7 @@ index 16d29fe..b688aec 100644
 +    "vegf_threshold_sprouting": 0.001,
 +    "verify_continuum_values": false,
 +    "viscosity": 2,
-+    "visualization_interval": 10,
++    "visualization_interval": 1000,
 +    "zeta_H_D_DOX": 200,
 +    "zeta_H_D_TRA": 200,
 +    "zeta_Q_D_DOX": 200,
