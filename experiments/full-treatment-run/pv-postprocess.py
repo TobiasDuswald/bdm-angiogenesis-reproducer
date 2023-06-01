@@ -246,6 +246,12 @@ vesselsDisplay.RescaleTransferFunctionToDataRange(False, True)
 # invert the transfer function
 diameter_LUT.InvertTransferFunction()
 
+# Rescale transfer function
+diameter_LUT.RescaleTransferFunction(2.5, 42.0)
+
+# Rescale transfer function
+diameter_PWF.RescaleTransferFunction(2.5, 42.0)
+
 animationScene1.GoToFirst()
 
 # Properties modified on renderView1
