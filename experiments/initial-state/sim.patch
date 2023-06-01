@@ -1,8 +1,8 @@
 diff --git a/bdm.json b/bdm.json
-index 16d29fe..eaf67c0 100644
+index 16d29fe..b688aec 100644
 --- a/bdm.json
 +++ b/bdm.json
-@@ -1,42 +1,165 @@
+@@ -1,23 +1,63 @@
  {
 +  "bdm::OptimizationParam": {
 +    "_typename": "bdm::OptimizationParam",
@@ -43,8 +43,6 @@ index 16d29fe..eaf67c0 100644
 +    "plot_memory_layout": false,
 +    "preferred_gpu": -1,
 +    "progress_bar_time_unit": "min",
-+    "pv_insitu_pipeline": "/Users/tobias/Programming/biodynamo_projects/bdm-angiogenesis-reproducer/biodynamo/build/include/core/visualization/paraview/default_insitu_pipeline.py",
-+    "pv_insitu_pipelinearguments": "",
 +    "random_seed": 4357,
      "remove_output_dir_contents": true,
 +    "restore_file": "",
@@ -63,7 +61,6 @@ index 16d29fe..eaf67c0 100644
 +    "visualization_compress_pv_files": true,
 +    "visualization_engine": "paraview",
 +    "visualization_export_generate_pvsm": true,
-+    "visualization_interval": 33,
      "visualize_agents": {
        "TumorCell": [
          "cell_state_",
@@ -74,16 +71,33 @@ index 16d29fe..eaf67c0 100644
        ],
        "Vessel": [],
        "_typename": "map<string,set<string> >"
--    },
--    "visualize_diffusion": [
--      {
--        "_typename": "bdm::Param::VisualizeDiffusion",
--        "concentration": true,
+@@ -26,17 +66,121 @@
+       {
+         "_typename": "bdm::Param::VisualizeDiffusion",
+         "concentration": true,
 -        "gradient": true,
--        "name": "VEGF"
--      }
--    ]
-+    }
++        "gradient": false,
+         "name": "VEGF"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "Nutrients"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "DOX"
++      },
++      {
++        "_typename": "bdm::Param::VisualizeDiffusion",
++        "concentration": true,
++        "gradient": false,
++        "name": "TRA"
+       }
+     ]
    },
    "bdm::SimParam": {
      "_typename": "bdm::SimParam",
@@ -93,22 +107,22 @@ index 16d29fe..eaf67c0 100644
 +    "adhesion_scale_parameter": 0.0489,
 +    "alpha_Q_D_N": 6.8e-06,
 +    "alpha_Q_SG2_N": 0.000821666666666667,
-+    "alpha_Q_SG2_TRA": 30,
++    "alpha_Q_SG2_TRA": 5,
 +    "alpha_SG2_D_DOX": 0.001,
-+    "alpha_SG2_SG2_DOX": 0.1,
++    "alpha_SG2_SG2_DOX": 0.001,
 +    "apical_growth_gradient_weight": 0.3,
 +    "apical_growth_old_weight": 0.5,
 +    "apical_growth_quotient_threshold": 0.001,
 +    "apical_growth_random_weight": 0.2,
 +    "apical_growth_speed": 0.033,
-+    "base_rate_H_D": 1e-05,
++    "base_rate_H_D": 0.00001,
 +    "boundary_condition_dox": 0,
 +    "boundary_condition_nutrients": 0,
 +    "boundary_condition_tra": 0,
 +    "boundary_condition_vegf": 0,
 +    "cell_nuclear_radius": 5.296,
 +    "cell_radius": 9.953,
-+    "decay_rate_dox": 0.0002,
++    "decay_rate_dox": 0,
 +    "decay_rate_nutrients": 1e-05,
 +    "decay_rate_tra": 0,
 +    "decay_rate_vegf": 1e-05,
@@ -124,16 +138,16 @@ index 16d29fe..eaf67c0 100644
 +    "diffusion_tra": 0.09,
 +    "diffusion_vegf": 0.175,
 +    "dox_consumption_rate_tcell": 0,
-+    "dox_supply_rate_vessel": 0.005,
++    "dox_supply_rate_vessel": 30,
 +    "duration_apoptosis": 516,
 +    "duration_cell_cycle": 1080,
 +    "duration_growth_phase": 540,
 +    "filled_volume": 0.64,
 +    "force_calculation_frequency": 6,
 +    "gamma_Q_D_N": 0.000408333333333333,
-+    "hypoxic_threshold": 0.09,
++    "hypoxic_threshold": 0.0538,
 +    "initial_concentration_dox": 0,
-+    "initial_concentration_nutrients": 0,
++    "initial_concentration_nutrients": 0.0,
 +    "initial_concentration_tra": 0,
 +    "initial_concentration_vegf": 0,
 +    "k_Q_D_N": 50,
@@ -142,8 +156,8 @@ index 16d29fe..eaf67c0 100644
 +    "min_dist_to_bifurcation": 80,
 +    "min_dist_to_tip_cell": 150,
 +    "num_cells": 1000,
-+    "nutrient_consumption_rate_tcell": -1.76,
-+    "nutrient_supply_rate_vessel": 0.003,
++    "nutrient_consumption_rate_tcell": -50,
++    "nutrient_supply_rate_vessel": 17,
 +    "random_vessel_exponent": 1,
 +    "random_vessel_frequency_mean": 3.1415,
 +    "random_vessel_frequency_std": 4,
@@ -151,14 +165,14 @@ index 16d29fe..eaf67c0 100644
 +    "random_vessel_num_modes": 10,
 +    "repulsive_scale_parameter": 10,
 +    "sprouting_rate": 0.001,
-+    "threshold_Q_D_N": 0.000538,
++    "threshold_Q_D_N": 0.00538,
 +    "threshold_Q_SG2_N": 0.0538,
-+    "threshold_SG2_D_DOX": 0.001,
-+    "threshold_SG2_SG2_DOX": 0.001,
++    "threshold_SG2_D_DOX": 0.1,
++    "threshold_SG2_SG2_DOX": 0.1,
 +    "tip_cell_finder_update_frequency": 1,
-+    "total_sim_time": 20,
-+    "tra_consumption_rate_tcell": -0.036,
-+    "tra_supply_rate_vessel": 0.1,
++    "total_sim_time": 100,
++    "tra_consumption_rate_tcell": -125,
++    "tra_supply_rate_vessel": 100,
 +    "vegf_consumption_rate_vessel": -4,
 +    "vegf_grad_threshold_apical_growth": 1e-05,
 +    "vegf_supply_rate_tcell": 100,
@@ -166,12 +180,10 @@ index 16d29fe..eaf67c0 100644
 +    "verify_continuum_values": false,
 +    "viscosity": 2,
 +    "visualization_interval": 10,
-+    "zeta_H_D_DOX": 100,
-+    "zeta_H_D_TRA": 0,
-+    "zeta_H_D_TRA_DOX": 0,
-+    "zeta_Q_D_DOX": 100,
-+    "zeta_Q_D_TRA": 0,
-+    "zeta_Q_D_TRA_DOX": 0
++    "zeta_H_D_DOX": 200,
++    "zeta_H_D_TRA": 200,
++    "zeta_Q_D_DOX": 200,
++    "zeta_Q_D_TRA": 200
 +  },
 +  "bdm::neuroscience::Param": {
 +    "_typename": "bdm::neuroscience::Param",
@@ -187,7 +199,7 @@ index 16d29fe..eaf67c0 100644
    }
  }
 diff --git a/pysrc/plot-data.py b/pysrc/plot-data.py
-index 2f3cfbc..e627dd3 100644
+index 2f3cfbc..7067c15 100644
 --- a/pysrc/plot-data.py
 +++ b/pysrc/plot-data.py
 @@ -118,7 +118,7 @@ def plot_data(N, data, results_dir):
@@ -199,44 +211,11 @@ index 2f3cfbc..e627dd3 100644
          ax.fill_between(
              data.index,
              data["lower_{}".format(i)],
-@@ -161,9 +161,15 @@ def plot_data(N, data, results_dir):
-         # Set the legend
-         ax.legend()
- 
-+        # Set location of the legend to the upper left corner
-+        ax.legend(loc="upper left")
-+
-         # Do not cut off the labels
-         fig.tight_layout()
- 
-+        # Limit the y-axis to 0 and 3000
-+        ax.set_ylim(0, 3000)
-+
-         # Save the figure
-         fig.savefig(os.path.join(results_dir, "growth_group_{}.pdf".format(i)))
- 
-@@ -183,7 +189,7 @@ if __name__ == "__main__":
-     filename = os.path.abspath(filename)
- 
-     # Define results directory
--    results_dir = os.path.join(dir_path, "..", "results", "data-visualization-2")
-+    results_dir = os.path.join(dir_path, "..", "results", "data-visualization-3")
-     results_dir = os.path.abspath(results_dir)
- 
-     # Read data
 diff --git a/src/angiogenesis_simulation.cc b/src/angiogenesis_simulation.cc
-index cd16b30..29884d0 100644
+index cd16b30..2268cf7 100644
 --- a/src/angiogenesis_simulation.cc
 +++ b/src/angiogenesis_simulation.cc
-@@ -323,6 +323,7 @@ int Simulate(int argc, const char** argv) {
-     OperationRegistry::GetInstance()->AddOperationImpl(
-         "VerifyContinuum", OpComputeTarget::kCpu, new VerifyContinuum());
-     auto* verify_continuum = NewOperation("VerifyContinuum");
-+    verify_continuum->frequency_ = 20;
-     scheduler->ScheduleOp(verify_continuum, OpType::kPostSchedule);
-   }
- 
-@@ -352,7 +353,7 @@ int Simulate(int argc, const char** argv) {
+@@ -352,10 +352,24 @@ int Simulate(int argc, const char** argv) {
    // Test if correct number of Agents were initialized
    std::cout << "Agents im Simulation: " << rm->GetNumAgents() << "\n";
  
@@ -245,7 +224,24 @@ index cd16b30..29884d0 100644
    u_int64_t time_steps{static_cast<u_int64_t>(
        ceil(sparam->total_sim_time / param->simulation_time_step))};
    scheduler->Simulate(time_steps);
-@@ -481,6 +482,11 @@ double PlaceStraightVessel(
++
++  // 12.2 Iterate over all agents and remove sprouting and growth behavior,
++  // i.e. freeze vessels and continue growing tumor
++  rm->ForEachAgent([](Agent* agent) {
++    auto* vessel = dynamic_cast<Vessel*>(agent);
++    if (vessel) {
++      vessel->RemoveBehavior(vessel->GetAllBehaviors()[0]);  // Remove sprouting
++      vessel->RemoveBehavior(vessel->GetAllBehaviors()[0]);  // Remove growth
++    }
++  });
++  // scheduler->Simulate(std::ceil(time_steps / 2.0));
++  // scheduler->Simulate(std::ceil(1.3 * time_steps));
++  scheduler->Simulate(time_steps);
++
+   std::cout << "Simulation completed successfully!" << std::endl;
+ 
+   // Save timeseries data
+@@ -481,6 +495,11 @@ double PlaceStraightVessel(
                                          compartment_length);
    vessel_compartment_1->SetDiameter(diameter);
    vessel_compartment_1->ProhibitGrowth();
@@ -257,409 +253,25 @@ index cd16b30..29884d0 100644
  
    Vessel* vessel_compartment_2{nullptr};
    for (int i = 1; i < n_compartments; i++) {
-diff --git a/src/angiogenesis_simulation.h b/src/angiogenesis_simulation.h
-index 9aa82f5..053d39e 100644
---- a/src/angiogenesis_simulation.h
-+++ b/src/angiogenesis_simulation.h
-@@ -36,24 +36,24 @@ class AngiogenesisSimulation : public Simulation {
-   const TipCellFinder* GetTipCellFinder() const { return &tip_cell_finder_; }
-   void UpdateTipCellFinder() { tip_cell_finder_.Update(); }
- 
--  const std::vector<double>& GetVesselPermeability() const {
--    return treatment_.GetVesselPermeability();
--  }
-+  // const std::vector<double>& GetVesselPermeability() const {
-+  //   return treatment_.GetVesselPermeability();
-+  // }
- 
--  double GetVesselPermeability(size_t time_step) const {
--    return treatment_.GetVesselPermeability()[time_step];
--  }
-+  // double GetVesselPermeability(size_t time_step) const {
-+  //   return treatment_.GetVesselPermeability()[time_step];
-+  // }
- 
--  void PrecomputeVesselPermeability(double t_end, double time_step,
--                                    double time_step_ode) {
--    treatment_.PrecomputeVesselPermeability(t_end, time_step, time_step_ode);
--  }
-+  // void PrecomputeVesselPermeability(double t_end, double time_step,
-+  //                                   double time_step_ode) {
-+  //   treatment_.PrecomputeVesselPermeability(t_end, time_step, time_step_ode);
-+  // }
- 
--  Treatment& GetTreatment() { return treatment_; }
-+  // Treatment& GetTreatment() { return treatment_; }
- 
-  private:
-   TipCellFinder tip_cell_finder_;
--  Treatment treatment_;
-+  // Treatment treatment_;
- };
- 
- }  // namespace bdm
-diff --git a/src/modules/treatment.cc b/src/modules/treatment.cc
-index 5ef0c1c..7bcfb98 100644
---- a/src/modules/treatment.cc
-+++ b/src/modules/treatment.cc
-@@ -1,98 +1,100 @@
-+// //
- // -----------------------------------------------------------------------------
--//
--// Copyright (C) 2022 CERN, TUM, and UT Austin. All Rights Reserved.
--//
--// Licensed under the Apache License, Version 2.0 (the "License");
--// you may not use this file except in compliance with the License.
--//
--// See the LICENSE file distributed with this work for details.
--// See the NOTICE file distributed with this work for additional information
--// regarding copyright ownership.
--//
-+// //
-+// // Copyright (C) 2022 CERN, TUM, and UT Austin. All Rights Reserved.
-+// //
-+// // Licensed under the Apache License, Version 2.0 (the "License");
-+// // you may not use this file except in compliance with the License.
-+// //
-+// // See the LICENSE file distributed with this work for details.
-+// // See the NOTICE file distributed with this work for additional information
-+// // regarding copyright ownership.
-+// //
-+// //
- // -----------------------------------------------------------------------------
- 
--#include "treatment.h"
--#include <cmath>
--#include <fstream>
-+// #include "treatment.h"
-+// #include <cmath>
-+// #include <fstream>
- 
--namespace bdm {
-+// namespace bdm {
- 
--bool Treatment::IsTraApplied(double t) const {
--  if (t >= tra_start_1_ && t < tra_end_1_) {
--    return true;
--  }
--  if (t >= tra_start_2_ && t < tra_end_2_) {
--    return true;
--  }
--  return false;
--}
-+// bool Treatment::IsTraApplied(double t) const {
-+//   if (t >= tra_start_1_ && t < tra_end_1_) {
-+//     return true;
-+//   }
-+//   if (t >= tra_start_2_ && t < tra_end_2_) {
-+//     return true;
-+//   }
-+//   return false;
-+// }
- 
--bool Treatment::IsDoxApplied(double t) const {
--  if (t >= dox_start_ && t < dox_end_) {
--    return true;
--  }
--  return false;
--};
-+// bool Treatment::IsDoxApplied(double t) const {
-+//   if (t >= dox_start_ && t < dox_end_) {
-+//     return true;
-+//   }
-+//   return false;
-+// };
- 
--/// ODE for the vessel permeability.
--double Treatment::VesselPermeabilityODE(double x, double t) const {
--  if (IsTraApplied(t)) {
--    return (max_vessel_permeability_ - x) / vessel_permeability_growth_;
--  } else {
--    return -x / vessel_permeability_decay_;
--  }
--}
-+// /// ODE for the vessel permeability.
-+// double Treatment::VesselPermeabilityODE(double x, double t) const {
-+//   if (IsTraApplied(t)) {
-+//     return (max_vessel_permeability_ - x) / vessel_permeability_growth_;
-+//   } else {
-+//     return -x / vessel_permeability_decay_;
-+//   }
-+// }
- 
--/// Precompute the vessel permeability.
--void Treatment::PrecomputeVesselPermeability(double t_end, double time_step,
--                                             double time_step_ode) {
--  // Initial condition
--  vessel_permeability.clear();
--  double x = vessel_permeability_0_;
-+// /// Precompute the vessel permeability.
-+// void Treatment::PrecomputeVesselPermeability(double t_end, double time_step,
-+//                                              double time_step_ode) {
-+//   // Initial condition
-+//   vessel_permeability.clear();
-+//   double x = vessel_permeability_0_;
- 
--  // Determine the number of backup steps, i.e. the number of steps that are
--  // written to the vessel permeability vector.
--  int backup_steps = std::ceil(t_end / time_step);
-+//   // Determine the number of backup steps, i.e. the number of steps that are
-+//   // written to the vessel permeability vector.
-+//   int backup_steps = std::ceil(t_end / time_step);
- 
--  // Adapt ode time step to backup steps
--  int num_ode_steps = std::ceil(time_step / time_step_ode);
--  time_step_ode = time_step / num_ode_steps;
-+//   // Adapt ode time step to backup steps
-+//   int num_ode_steps = std::ceil(time_step / time_step_ode);
-+//   time_step_ode = time_step / num_ode_steps;
- 
--  // Precompute vessel permeability
--  double time = 0;
--  vessel_permeability.push_back(x);
--  for (int i = 0; i < backup_steps; i++) {
--    for (int j = 0; j < num_ode_steps; j++) {
--      // Forward Euler
--      double tmp = VesselPermeabilityODE(x, time);
--      x += time_step_ode * tmp;
--      // Avoid overshooting
--      if (x < 0) {
--        x = 0;
--      }
--      if (x > max_vessel_permeability_) {
--        x = max_vessel_permeability_;
--      }
--      // Update time
--      time += time_step_ode;
--    }
--    vessel_permeability.push_back(x);
--  }
--};
-+//   // Precompute vessel permeability
-+//   double time = 0;
-+//   vessel_permeability.push_back(x);
-+//   for (int i = 0; i < backup_steps; i++) {
-+//     for (int j = 0; j < num_ode_steps; j++) {
-+//       // Forward Euler
-+//       double tmp = VesselPermeabilityODE(x, time);
-+//       x += time_step_ode * tmp;
-+//       // Avoid overshooting
-+//       if (x < 0) {
-+//         x = 0;
-+//       }
-+//       if (x > max_vessel_permeability_) {
-+//         x = max_vessel_permeability_;
-+//       }
-+//       // Update time
-+//       time += time_step_ode;
-+//     }
-+//     vessel_permeability.push_back(x);
-+//   }
-+// };
- 
--void Treatment::SaveTreatmentParametersToJson(
--    const std::string& filename) const {
--  std::ofstream file;
--  file.open(filename);
--  file << "{\n";
--  file << "  \"tra_start_1\": " << tra_start_1_ << ",\n";
--  file << "  \"tra_end_1\": " << tra_end_1_ << ",\n";
--  file << "  \"tra_start_2\": " << tra_start_2_ << ",\n";
--  file << "  \"tra_end_2\": " << tra_end_2_ << ",\n";
--  file << "  \"dox_start\": " << dox_start_ << ",\n";
--  file << "  \"dox_end\": " << dox_end_ << "\n";
--  file << "}\n";
--  file.close();
--}
-+// void Treatment::SaveTreatmentParametersToJson(
-+//     const std::string& filename) const {
-+//   std::ofstream file;
-+//   file.open(filename);
-+//   file << "{\n";
-+//   file << "  \"tra_start_1\": " << tra_start_1_ << ",\n";
-+//   file << "  \"tra_end_1\": " << tra_end_1_ << ",\n";
-+//   file << "  \"tra_start_2\": " << tra_start_2_ << ",\n";
-+//   file << "  \"tra_end_2\": " << tra_end_2_ << ",\n";
-+//   file << "  \"dox_start\": " << dox_start_ << ",\n";
-+//   file << "  \"dox_end\": " << dox_end_ << "\n";
-+//   file << "}\n";
-+//   file.close();
-+// }
- 
--}  // namespace bdm
-+// }  // namespace bdm
-diff --git a/src/modules/treatment.h b/src/modules/treatment.h
-index 42fa3ba..533c231 100644
---- a/src/modules/treatment.h
-+++ b/src/modules/treatment.h
-@@ -1,82 +1,86 @@
-+// //
- // -----------------------------------------------------------------------------
--//
--// Copyright (C) 2022 CERN, TUM, and UT Austin. All Rights Reserved.
--//
--// Licensed under the Apache License, Version 2.0 (the "License");
--// you may not use this file except in compliance with the License.
--//
--// See the LICENSE file distributed with this work for details.
--// See the NOTICE file distributed with this work for additional information
--// regarding copyright ownership.
--//
-+// //
-+// // Copyright (C) 2022 CERN, TUM, and UT Austin. All Rights Reserved.
-+// //
-+// // Licensed under the Apache License, Version 2.0 (the "License");
-+// // you may not use this file except in compliance with the License.
-+// //
-+// // See the LICENSE file distributed with this work for details.
-+// // See the NOTICE file distributed with this work for additional information
-+// // regarding copyright ownership.
-+// //
-+// //
- // -----------------------------------------------------------------------------
- 
--#ifndef TREATMENT_H_
--#define TREATMENT_H_
--
--#include <vector>
--
--namespace bdm {
--
--class Treatment {
-- public:
--  Treatment() = default;
--  ~Treatment() = default;
--
--  /// Indicator function for the TRA treatment. Returns true if the treatment is
--  /// applied, false otherwise.
--  /// @param t - current simulation time [min]
--  bool IsTraApplied(double t) const;
--
--  /// Indicator function for the DOX treatment. Returns true if the treatment is
--  /// applied, false otherwise.
--  /// @param t - current simulation time [min]
--  bool IsDoxApplied(double t) const;
--
--  /// ODE for the vessel permeability.
--  double VesselPermeabilityODE(double x, double t) const;
--
--  /// Precompute the vessel permeability.
--  void PrecomputeVesselPermeability(double t_end, double time_step,
--                                    double time_step_ode);
--
--  const std::vector<double>& GetVesselPermeability() const {
--    return vessel_permeability;
--  }
--
--  // Set the six treatment parameters.
--  void SetTreatmentParameters(double tra_start_1, double tra_end_1,
--                              double tra_start_2, double tra_end_2,
--                              double dox_start, double dox_end) {
--    tra_start_1_ = tra_start_1;
--    tra_end_1_ = tra_end_1;
--    tra_start_2_ = tra_start_2;
--    tra_end_2_ = tra_end_2;
--    dox_start_ = dox_start;
--    dox_end_ = dox_end;
--  }
--
--  // Save the six treatment parameters to a json file.
--  void SaveTreatmentParametersToJson(const std::string& filename) const;
--
-- private:
--  std::vector<double> vessel_permeability;
--
--  // Treatment parameters. Start end in minutes.
--  double tra_start_1_ = 102 * 60 * 24;
--  double tra_end_1_ = 103 * 60 * 24;
--  double tra_start_2_ = 105 * 60 * 24;
--  double tra_end_2_ = 106 * 60 * 24;
--  double dox_start_ = 108 * 60 * 24;
--  double dox_end_ = 109 * 60 * 24;
--
--  // Vessel permeability parameters
--  double vessel_permeability_0_ = 0.0;
--  double max_vessel_permeability_ = 9;
--  double vessel_permeability_decay_ = 10.0 * 60 * 24;
--  double vessel_permeability_growth_ = 0.4 * 60 * 24;
--};
--
--}  // namespace bdm
--
--#endif  // TREATMENT_H_
-+// #ifndef TREATMENT_H_
-+// #define TREATMENT_H_
+diff --git a/src/modules/tumor_cell.cc b/src/modules/tumor_cell.cc
+index 1fda9ed..5b051b6 100644
+--- a/src/modules/tumor_cell.cc
++++ b/src/modules/tumor_cell.cc
+@@ -187,6 +187,12 @@ Double3 TumorCell::CalculateDisplacement(const InteractionForce* force,
+   displacement = velocity * param->simulation_time_step *
+                  sparam->force_calculation_frequency;
+   LimitDisplacementAtBoundary(displacement);
 +
-+// #include <vector>
++  // Limit dislacement to at most 20
++  if (displacement.Norm() > 20) {
++    displacement *= 20 / displacement.Norm();
++  }
 +
-+// namespace bdm {
-+
-+// class Treatment {
-+//  public:
-+//   Treatment() = default;
-+//   ~Treatment() = default;
-+
-+//   /// Indicator function for the TRA treatment. Returns true if the treatment
-+//   is
-+//   /// applied, false otherwise.
-+//   /// @param t - current simulation time [min]
-+//   bool IsTraApplied(double t) const;
-+
-+//   /// Indicator function for the DOX treatment. Returns true if the treatment
-+//   is
-+//   /// applied, false otherwise.
-+//   /// @param t - current simulation time [min]
-+//   bool IsDoxApplied(double t) const;
-+
-+//   /// ODE for the vessel permeability.
-+//   double VesselPermeabilityODE(double x, double t) const;
-+
-+//   /// Precompute the vessel permeability.
-+//   void PrecomputeVesselPermeability(double t_end, double time_step,
-+//                                     double time_step_ode);
-+
-+//   const std::vector<double>& GetVesselPermeability() const {
-+//     return vessel_permeability;
-+//   }
-+
-+//   // Set the six treatment parameters.
-+//   void SetTreatmentParameters(double tra_start_1, double tra_end_1,
-+//                               double tra_start_2, double tra_end_2,
-+//                               double dox_start, double dox_end) {
-+//     tra_start_1_ = tra_start_1;
-+//     tra_end_1_ = tra_end_1;
-+//     tra_start_2_ = tra_start_2;
-+//     tra_end_2_ = tra_end_2;
-+//     dox_start_ = dox_start;
-+//     dox_end_ = dox_end;
-+//   }
-+
-+//   // Save the six treatment parameters to a json file.
-+//   void SaveTreatmentParametersToJson(const std::string& filename) const;
-+
-+//  private:
-+//   std::vector<double> vessel_permeability;
-+
-+//   // Treatment parameters. Start end in minutes.
-+//   double tra_start_1_ = 102 * 60 * 24;
-+//   double tra_end_1_ = 103 * 60 * 24;
-+//   double tra_start_2_ = 105 * 60 * 24;
-+//   double tra_end_2_ = 106 * 60 * 24;
-+//   double dox_start_ = 108 * 60 * 24;
-+//   double dox_end_ = 109 * 60 * 24;
-+
-+//   // Vessel permeability parameters
-+//   double vessel_permeability_0_ = 0.0;
-+//   double max_vessel_permeability_ = 9;
-+//   double vessel_permeability_decay_ = 10.0 * 60 * 24;
-+//   double vessel_permeability_growth_ = 0.4 * 60 * 24;
-+// };
-+
-+// }  // namespace bdm
-+
-+// #endif  // TREATMENT_H_
+   return displacement;
+ }
+ 
 diff --git a/src/modules/vessel.cc b/src/modules/vessel.cc
-index 72db909..057a5cc 100644
+index 72db909..43abda8 100644
 --- a/src/modules/vessel.cc
 +++ b/src/modules/vessel.cc
 @@ -230,7 +230,7 @@ void ApicalGrowth::Run(Agent* agent) {
@@ -671,40 +283,19 @@ index 72db909..057a5cc 100644
      // This indicates that we're now in the tumor region, stop growth. No longer
      // counted as tip cell.
      auto* vessel = dynamic_cast<Vessel*>(agent);
-@@ -286,6 +286,12 @@ void LineContinuumInteraction::Run(Agent* agent) {
- 
-     // Get the pointers to the diffusion grids: nutrients, VEGF, DOX, and TRA
-     auto* sim = Simulation::GetActive();
-+    // WARNING: This is a bit of a hack. We need to cast the simulation to the
-+    // derived class AngiogenesisSimulation to access the tip cell finder.
-+    // The simulation is however not polymorphic, so we cannot use dynamic_cast.
-+    // We can however use static_cast, because we know that the simulation is
-+    // an AngiogenesisSimulation. This is only true for this specific example.
-+    auto* asim = static_cast<AngiogenesisSimulation*>(sim);
-     const auto* rm = sim->GetResourceManager();
-     auto* param = sim->GetParam();
-     const double simulation_time_step = param->simulation_time_step;
-@@ -353,7 +359,38 @@ void LineContinuumInteraction::Run(Agent* agent) {
-     const double surface = vessel->GetSurfaceArea();
+@@ -354,6 +354,26 @@ void LineContinuumInteraction::Run(Agent* agent) {
      for (int j = 0; j < 4; j++) {
        auto* dg = dg_array[j];
--      const double rate = interaction_rate_[j];
-+      double rate = interaction_rate_[j];
+       const double rate = interaction_rate_[j];
 +      if (j == 2) {
 +        // DOX is only supplied between specific times
-+        // constexpr double start_time = 106 * 24 * 60;
-+        // constexpr double end_time = 108 * 24 * 60;
++        constexpr double start_time = 106 * 24 * 60;
++        constexpr double end_time = 108 * 24 * 60;
 +        const double time =
 +            Simulation::GetActive()->GetScheduler()->GetSimulatedTime();
-+        // bool dox_active = asim->GetTreatment().IsDoxApplied(time);
-+        bool dox_active = false;
-+        // if (time < start_time || time > end_time) {
-+        if (!dox_active) {
++        if (time < start_time || time > end_time) {
 +          continue;
 +        }
-+        const auto simulated_time_steps =
-+            Simulation::GetActive()->GetScheduler()->GetSimulatedSteps();
-+        // rate *= (1 + asim->GetVesselPermeability(simulated_time_steps));
 +      }
 +      if (j == 3) {
 +        // TRA is only supplied between specific times
@@ -712,308 +303,10 @@ index 72db909..057a5cc 100644
 +        constexpr double end_time = 104 * 24 * 60;
 +        const double time =
 +            Simulation::GetActive()->GetScheduler()->GetSimulatedTime();
-+        // bool tra_active = asim->GetTreatment().IsTraApplied(time);
-+        bool tra_active = false;
-+        if (!tra_active) {
++        if (time < start_time || time > end_time) {
 +          continue;
 +        }
-+        // if (time < start_time || time > end_time) {
-+        //   continue;
-+        // }
 +      }
        if (rate == 0) {
          continue;
        }
-diff --git a/src/util/analysis.cc b/src/util/analysis.cc
-index 6f6f764..d189d28 100644
---- a/src/util/analysis.cc
-+++ b/src/util/analysis.cc
-@@ -381,15 +381,15 @@ void PlotAndSaveTimeseries() {
-         Concat(sim->GetOutputDir(), "/time-series-continua-data.json"));
-   }
- 
--  // Write the vector of the precomputed permeability values to a file
--  auto *asim = static_cast<AngiogenesisSimulation *>(sim);
--  const auto &permeability_values = asim->GetVesselPermeability();
--  std::ofstream file;
--  file.open(Concat(sim->GetOutputDir(), "/permeability_values.txt"));
--  for (auto &value : permeability_values) {
--    file << value << std::endl;
--  }
--  file.close();
-+  // // Write the vector of the precomputed permeability values to a file
-+  // auto *asim = static_cast<AngiogenesisSimulation *>(sim);
-+  // const auto &permeability_values = asim->GetVesselPermeability();
-+  // std::ofstream file;
-+  // file.open(Concat(sim->GetOutputDir(), "/permeability_values.txt"));
-+  // for (auto &value : permeability_values) {
-+  //   file << value << std::endl;
-+  // }
-+  // file.close();
- }
- 
- void PlotAndSaveHistogram(const std::vector<double> &data,
-diff --git a/test/test_suit_treatment.cc b/test/test_suit_treatment.cc
-index f084c2a..607b62f 100644
---- a/test/test_suit_treatment.cc
-+++ b/test/test_suit_treatment.cc
-@@ -1,129 +1,133 @@
-+// //
- // -----------------------------------------------------------------------------
--//
--// Copyright (C) 2022 CERN, TUM, and UT Austin. All Rights Reserved.
--//
--// Licensed under the Apache License, Version 2.0 (the "License");
--// you may not use this file except in compliance with the License.
--//
--// See the LICENSE file distributed with this work for details.
--// See the NOTICE file distributed with this work for additional information
--// regarding copyright ownership.
--//
-+// //
-+// // Copyright (C) 2022 CERN, TUM, and UT Austin. All Rights Reserved.
-+// //
-+// // Licensed under the Apache License, Version 2.0 (the "License");
-+// // you may not use this file except in compliance with the License.
-+// //
-+// // See the LICENSE file distributed with this work for details.
-+// // See the NOTICE file distributed with this work for additional information
-+// // regarding copyright ownership.
-+// //
-+// //
- // -----------------------------------------------------------------------------
- 
--#include <gtest/gtest.h>
--#include <array>
--#include <fstream>
--#include "modules/treatment.h"
--
--namespace bdm {
--
--double DaysToMinutes(double days) { return days * 24 * 60; }
--
--TEST(Treatment, Schedule) {
--  Treatment treatment;
--
--  // Time in days
--  double time = 0;
--
--  // Treatment parameters. Start end in minutes.
--  double tra_start_1_ = 102 * 60 * 24;
--  double tra_end_1_ = 103 * 60 * 24;
--  double tra_start_2_ = 105 * 60 * 24;
--  double tra_end_2_ = 106 * 60 * 24;
--  double dox_start_ = 108 * 60 * 24;
--  double dox_end_ = 109 * 60 * 24;
--
--  // Iterate form 0 to 200 days in steps of 0.1 days and check if the treatment
--  // is applied.
--  for (int i = 0; i < 2000; i++) {
--    time = i * 0.1 * 24 * 60;
--    if (time >= tra_start_1_ && time < tra_end_1_) {
--      EXPECT_TRUE(treatment.IsTraApplied(time));
--    } else if (time >= tra_start_2_ && time < tra_end_2_) {
--      EXPECT_TRUE(treatment.IsTraApplied(time));
--    } else {
--      EXPECT_FALSE(treatment.IsTraApplied(time));
--    }
--
--    if (time >= dox_start_ && time < dox_end_) {
--      EXPECT_TRUE(treatment.IsDoxApplied(time));
--    } else {
--      EXPECT_FALSE(treatment.IsDoxApplied(time));
--    }
--  }
--}
--
--TEST(Treatment, VesselPermeabilityODE) {
--  Treatment treatment;
--
--  // Time in days
--  double time = 0;
--
--  // Treatment parameters. Start end in minutes.
--  double tra_start_1_ = 102 * 60 * 24;
--  double tra_end_1_ = 103 * 60 * 24;
--  double tra_start_2_ = 105 * 60 * 24;
--  double tra_end_2_ = 106 * 60 * 24;
--
--  // Iterate form 0 to 200 days in steps of 0.1 days and check if the treatment
--  // is applied.
--  for (int i = 0; i < 2000; i++) {
--    time = i * 0.1 * 24 * 60;
--    // Check if The VesselPermeabilityODE is larger than zero if the TRA
--    // treatment is applied, smaller than zero else.
--    if (time >= tra_start_1_ && time < tra_end_1_) {
--      EXPECT_GT(treatment.VesselPermeabilityODE(0.5, time), 0);
--    } else if (time >= tra_start_2_ && time < tra_end_2_) {
--      EXPECT_GT(treatment.VesselPermeabilityODE(0.5, time), 0);
--    } else {
--      EXPECT_LT(treatment.VesselPermeabilityODE(0.5, time), 0);
--    }
--  }
--}
--
--TEST(Treatment, PrecomputeVesselPermeability) {
--  Treatment treatment;
--
--  // Treatment parameters. Start end in minutes.
--  double tra_start_1_ = 102 * 60 * 24;
--  double tra_end_1_ = 103 * 60 * 24;
--  double tra_start_2_ = 105 * 60 * 24;
--  double tra_end_2_ = 106 * 60 * 24;
--
--  // Time in days to precompute the vessel permeability
--  double t_end = 200;
--  // Time step in days
--  double dt = 0.1;
--  // Time step for the ODE solver
--  double dt_ode = 0.0001;
--
--  // Precompute the vessel permeability
--  treatment.PrecomputeVesselPermeability(
--      DaysToMinutes(t_end), DaysToMinutes(dt), DaysToMinutes(dt_ode));
--  auto& vessel_permeability = treatment.GetVesselPermeability();
--
--  // Iterate over the precomputed vessel permeability and check if the
--  // permeability increases if the TRA treatment is applied, and decreases
--  // otherwise.
--  for (int i = 1021; i < vessel_permeability.size(); i++) {
--    double t = i * dt * 24 * 60;
--    std::cout << i << " " << t << " " << vessel_permeability[i] << std::endl;
--    if (t > tra_start_1_ && t <= tra_end_1_) {
--      EXPECT_GT(vessel_permeability[i] - vessel_permeability[i - 1], 0);
--    } else if (t > tra_start_2_ && t <= tra_end_2_) {
--      EXPECT_GT(vessel_permeability[i] - vessel_permeability[i - 1], 0);
--    } else {
--      EXPECT_LT(vessel_permeability[i] - vessel_permeability[i - 1], 0);
--    }
--  }
--
--  // Write the vector to a txt file
--  std::ofstream file;
--  file.open("vessel_permeability.txt");
--  for (int i = 0; i < vessel_permeability.size(); i++) {
--    file << vessel_permeability[i] << std::endl;
--  }
--}
--
--}  // namespace bdm
-+// #include <gtest/gtest.h>
-+// #include <array>
-+// #include <fstream>
-+// #include "modules/treatment.h"
-+
-+// namespace bdm {
-+
-+// double DaysToMinutes(double days) { return days * 24 * 60; }
-+
-+// TEST(Treatment, Schedule) {
-+//   Treatment treatment;
-+
-+//   // Time in days
-+//   double time = 0;
-+
-+//   // Treatment parameters. Start end in minutes.
-+//   double tra_start_1_ = 102 * 60 * 24;
-+//   double tra_end_1_ = 103 * 60 * 24;
-+//   double tra_start_2_ = 105 * 60 * 24;
-+//   double tra_end_2_ = 106 * 60 * 24;
-+//   double dox_start_ = 108 * 60 * 24;
-+//   double dox_end_ = 109 * 60 * 24;
-+
-+//   // Iterate form 0 to 200 days in steps of 0.1 days and check if the
-+//   treatment
-+//   // is applied.
-+//   for (int i = 0; i < 2000; i++) {
-+//     time = i * 0.1 * 24 * 60;
-+//     if (time >= tra_start_1_ && time < tra_end_1_) {
-+//       EXPECT_TRUE(treatment.IsTraApplied(time));
-+//     } else if (time >= tra_start_2_ && time < tra_end_2_) {
-+//       EXPECT_TRUE(treatment.IsTraApplied(time));
-+//     } else {
-+//       EXPECT_FALSE(treatment.IsTraApplied(time));
-+//     }
-+
-+//     if (time >= dox_start_ && time < dox_end_) {
-+//       EXPECT_TRUE(treatment.IsDoxApplied(time));
-+//     } else {
-+//       EXPECT_FALSE(treatment.IsDoxApplied(time));
-+//     }
-+//   }
-+// }
-+
-+// TEST(Treatment, VesselPermeabilityODE) {
-+//   Treatment treatment;
-+
-+//   // Time in days
-+//   double time = 0;
-+
-+//   // Treatment parameters. Start end in minutes.
-+//   double tra_start_1_ = 102 * 60 * 24;
-+//   double tra_end_1_ = 103 * 60 * 24;
-+//   double tra_start_2_ = 105 * 60 * 24;
-+//   double tra_end_2_ = 106 * 60 * 24;
-+
-+//   // Iterate form 0 to 200 days in steps of 0.1 days and check if the
-+//   treatment
-+//   // is applied.
-+//   for (int i = 0; i < 2000; i++) {
-+//     time = i * 0.1 * 24 * 60;
-+//     // Check if The VesselPermeabilityODE is larger than zero if the TRA
-+//     // treatment is applied, smaller than zero else.
-+//     if (time >= tra_start_1_ && time < tra_end_1_) {
-+//       EXPECT_GT(treatment.VesselPermeabilityODE(0.5, time), 0);
-+//     } else if (time >= tra_start_2_ && time < tra_end_2_) {
-+//       EXPECT_GT(treatment.VesselPermeabilityODE(0.5, time), 0);
-+//     } else {
-+//       EXPECT_LT(treatment.VesselPermeabilityODE(0.5, time), 0);
-+//     }
-+//   }
-+// }
-+
-+// TEST(Treatment, PrecomputeVesselPermeability) {
-+//   Treatment treatment;
-+
-+//   // Treatment parameters. Start end in minutes.
-+//   double tra_start_1_ = 102 * 60 * 24;
-+//   double tra_end_1_ = 103 * 60 * 24;
-+//   double tra_start_2_ = 105 * 60 * 24;
-+//   double tra_end_2_ = 106 * 60 * 24;
-+
-+//   // Time in days to precompute the vessel permeability
-+//   double t_end = 200;
-+//   // Time step in days
-+//   double dt = 0.1;
-+//   // Time step for the ODE solver
-+//   double dt_ode = 0.0001;
-+
-+//   // Precompute the vessel permeability
-+//   treatment.PrecomputeVesselPermeability(
-+//       DaysToMinutes(t_end), DaysToMinutes(dt), DaysToMinutes(dt_ode));
-+//   auto& vessel_permeability = treatment.GetVesselPermeability();
-+
-+//   // Iterate over the precomputed vessel permeability and check if the
-+//   // permeability increases if the TRA treatment is applied, and decreases
-+//   // otherwise.
-+//   for (int i = 1021; i < vessel_permeability.size(); i++) {
-+//     double t = i * dt * 24 * 60;
-+//     std::cout << i << " " << t << " " << vessel_permeability[i] << std::endl;
-+//     if (t > tra_start_1_ && t <= tra_end_1_) {
-+//       EXPECT_GT(vessel_permeability[i] - vessel_permeability[i - 1], 0);
-+//     } else if (t > tra_start_2_ && t <= tra_end_2_) {
-+//       EXPECT_GT(vessel_permeability[i] - vessel_permeability[i - 1], 0);
-+//     } else {
-+//       EXPECT_LT(vessel_permeability[i] - vessel_permeability[i - 1], 0);
-+//     }
-+//   }
-+
-+//   // Write the vector to a txt file
-+//   std::ofstream file;
-+//   file.open("vessel_permeability.txt");
-+//   for (int i = 0; i < vessel_permeability.size(); i++) {
-+//     file << vessel_permeability[i] << std::endl;
-+//   }
-+// }
-+
-+// }  // namespace bdm
