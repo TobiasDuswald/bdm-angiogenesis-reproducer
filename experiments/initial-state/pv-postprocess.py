@@ -177,11 +177,9 @@ vesselsDisplay.DataAxesGrid.YLabelBold = 1
 vesselsDisplay.DataAxesGrid.ZLabelBold = 1
 
 # Properties modified on vesselsDisplay.DataAxesGrid
-vesselsDisplay.DataAxesGrid.ZAxisUseCustomLabels = 1
-vesselsDisplay.DataAxesGrid.ZAxisLabels = [-1000.0, -750.0, -500.0, -250.0, 0.0, 250.0, 500.0, 750.0, 1000.0]
-
-# Properties modified on vesselsDisplay.DataAxesGrid
-vesselsDisplay.DataAxesGrid.ZLabelBold = 1
+if is_apple:
+    vesselsDisplay.DataAxesGrid.ZAxisUseCustomLabels = 1
+    vesselsDisplay.DataAxesGrid.ZAxisLabels = [-1000.0, -750.0, -500.0, -250.0, 0.0, 250.0, 500.0, 750.0, 1000.0]
 
 # Properties modified on vesselsDisplay.DataAxesGrid
 vesselsDisplay.DataAxesGrid.XLabelFontSize = 24
@@ -210,23 +208,23 @@ renderView1.CameraFocalPoint = [28.55023193359375, -0.219818115234375, 2.5309448
 renderView1.CameraViewUp = [0.0, 0.0, 1.0]
 renderView1.CameraParallelScale = 1441.412375074145
 
-# # Enable OSPRay for rendering on server
-# if not is_apple:
-#     pm = paraview.servermanager.vtkSMProxyManager
-#     if pm.GetVersionMajor() == 5 and pm.GetVersionMinor() < 7:
-#         renderView1.EnableOSPRay = 1
-#         renderView1.OSPRayRenderer = "pathtracer"
-#     else:
-#         renderView1.EnableRayTracing = 1
-#         renderView1.BackEnd = "OSPRay raycaster"
-#         renderView1.Denoise = 1
-#     # Properties modified on renderView1
-#     renderView1.Shadows = 1
-#     # Properties modified on renderView1
-#     renderView1.SamplesPerPixel = 10
-#     renderView1.AmbientSamples = 2
-#     # For unclear reasons, the line below makes our life miserable
-#     # renderView1.UseToneMapping = 1
+# Enable OSPRay for rendering on server
+if not is_apple:
+    pm = paraview.servermanager.vtkSMProxyManager
+    if pm.GetVersionMajor() == 5 and pm.GetVersionMinor() < 7:
+        renderView1.EnableOSPRay = 1
+        renderView1.OSPRayRenderer = "pathtracer"
+    else:
+        renderView1.EnableRayTracing = 1
+        renderView1.BackEnd = "OSPRay raycaster"
+        renderView1.Denoise = 1
+    # Properties modified on renderView1
+    renderView1.Shadows = 1
+    # Properties modified on renderView1
+    renderView1.SamplesPerPixel = 10
+    renderView1.AmbientSamples = 2
+    # For unclear reasons, the line below makes our life miserable
+    # renderView1.UseToneMapping = 1
 
 # save screenshot
 SaveScreenshot(folder + '/ParaView/view1.png', renderView1, ImageResolution=[2564, 1954],
