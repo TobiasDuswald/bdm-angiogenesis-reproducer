@@ -36,6 +36,9 @@ source_bdm
 SIMCOMMIT=$(cat $DIR/sim-commit.txt)
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/sim.patch
+if [ -d "$SIMDIR/build" ]; then
+  rm -rf $SIMDIR/build
+fi
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
@@ -55,7 +58,7 @@ cd $DIR
 reset_repository $SIMDIR
 reset_repository $BDMDIR
 rm -rf $SIMDIR/output
-# rm -rf $SIMDIR/build
+rm -rf $SIMDIR/build
 # rm -rf $BDMDIR/build
 
 
