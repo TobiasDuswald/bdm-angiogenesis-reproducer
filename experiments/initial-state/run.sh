@@ -36,54 +36,29 @@ source_bdm
 SIMCOMMIT=$(cat $DIR/sim-commit.txt)
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/sim.patch
+if [ -d "$SIMDIR/build" ]; then
+  rm -rf $SIMDIR/build
+fi
 build $SIMDIR
-cp $DIR/bdm.json $SIMDIR/bdm.json
 
 # -----------------------------------------------------------------------------
-# 3. Run the simulations
+# 3. Run the simulation & analyze the results
 # -----------------------------------------------------------------------------
-
-x_list=( 0.15 0.13 0.12 0.11 )
-PATTERN="hypoxic_threshold\": 0.13"
-for x in "${x_list[@]}"
-do
-    # Replace the parameter x in the config file
-    replace "$SIMDIR/bdm.json" "$PATTERN" "hypoxic_threshold\": $x"
-
-    # Run the application
-    run_simulation $SIMDIR
-
-    # Reeplace the parameter x in the config file with the original value
-    replace "$SIMDIR/bdm.json" "hypoxic_threshold\": $x" "$PATTERN"
-done
-
-# -----------------------------------------------------------------------------
-# 4. Post-processing
-# -----------------------------------------------------------------------------
-
-# Prepare for visualization (fix for transparent background in later commit)
-reset_repository $SIMDIR
-VIZCOMMIT=$(cat $DIR/viz-commit.txt)
-checkout $SIMDIR $VIZCOMMIT
+run_simulation $SIMDIR
 cd $SIMDIR
-# Set the parameters for the visualization script
-replace "scripts/visualize-tumor-cells.sh" "BACKGROUND=0" "BACKGROUND=1"
-replace "scripts/visualize-tumor-cells.sh" "AXES=1" "AXES=0"
-replace "scripts/visualize-tumor-cells.sh" "COLORBAR=1" "COLORBAR=0"
-# Trigger the visualization script
-./scripts/visualize-tumor-cells.sh
-# Copy the results to the results directory
+mkdir -p $SIMDIR/output/angiogenesis/ParaView
+echo -e "${GREEN}Running post-processing script...${NC}"
+pvpython $DIR/pv-postprocess.py $SIMDIR/output/angiogenesis
 copy_results $SIMDIR/output/angiogenesis $DIR/results
 cd $DIR
-python $DIR/postprocess.py
 
 # -----------------------------------------------------------------------------
 # 6. Cleanup
 # -----------------------------------------------------------------------------
 reset_repository $SIMDIR
 reset_repository $BDMDIR
-# rm -rf $SIMDIR/output
-# rm -rf $SIMDIR/build
+rm -rf $SIMDIR/output
+rm -rf $SIMDIR/build
 # rm -rf $BDMDIR/build
 
 

@@ -20,6 +20,9 @@ from paraview.simple import *
 #### disable automatic camera reset on 'Show'
 paraview.simple._DisableFirstRenderCameraReset()
 
+# determine if we are running on an apple system
+is_apple = sys.platform == "darwin"
+
 # get active view
 renderView1 = GetActiveViewOrCreate('RenderView')
 
@@ -37,7 +40,8 @@ renderView1 = FindViewOrCreate('RenderView1', viewtype='RenderView')
 SetActiveView(renderView1)
 
 # reset view to fit data
-renderView1.ResetCamera(False)
+if is_apple:
+    renderView1.ResetCamera(False)
 
 # get animation scene
 animationScene1 = GetAnimationScene()
@@ -71,6 +75,10 @@ Hide(tRAconcentration, renderView1)
 # find source
 tumorCells = FindSource('TumorCells')
 
+# Fix resolution for spheres
+tumorCells.GlyphType.ThetaResolution = 20
+tumorCells.GlyphType.PhiResolution = 20
+
 # set active source
 SetActiveSource(tumorCells)
 
@@ -78,13 +86,15 @@ SetActiveSource(tumorCells)
 tumorCellsDisplay = GetDisplayProperties(tumorCells, view=renderView1)
 
 # reset view to fit data
-renderView1.ResetCamera(True)
+if is_apple:
+    renderView1.ResetCamera(True)
 
 # reset view to fit data bounds
-renderView1.ResetCamera(-262.0887756347656, 217.981689453125, -238.97984313964844, 279.3093566894531, -190.99217224121094, 260.3154602050781, True)
+# renderView1.ResetCamera(-262.0887756347656, 217.981689453125, -238.97984313964844, 279.3093566894531, -190.99217224121094, 260.3154602050781, True)
 
 # find source
 vessels = FindSource('Vessels')
+vessels.GlyphType.Resolution = 40
 
 # set active source
 SetActiveSource(vessels)
@@ -292,8 +302,15 @@ diameter_LUT.RGBPoints = [5.0, 1.0, 1.0, 0.999979, 6.615616321563721, 0.987833, 
 # Properties modified on diameter_LUT
 diameter_LUT.RGBPoints = [5.0, 1.0, 1.0, 0.999979, 6.615616321563721, 0.987833, 0.637276, 0.569944, 11.11626148223877, 0.905663, 0.345937, 0.258215, 23.391777992439692, 0.847035, 0.254558, 0.189407, 25.708859292538435, 0.763833, 0.187056, 0.138326, 28.02593006805082, 0.665179, 0.144238, 0.105585, 30.343000843563196, 0.557199, 0.122714, 0.0860013, 32.66007161907558, 0.457731, 0.0934935, 0.0636931, 34.977142394587965, 0.356059, 0.0746331, 0.0446897, 37.29423163428694, 0.253411, 0.0617478, 0.0301333, 39.61130240979932, 0.147204, 0.0480135, 0.0401815, 41.928373185311706, 0.0, 0.0, 0.0]
 
+# Rescale transfer function
+diameter_LUT.RescaleTransferFunction(2.5, 42.0)
+
+# Rescale transfer function
+diameter_PWF.RescaleTransferFunction(2.5, 42.0)
+
 # Properties modified on renderView1
-renderView1.UseColorPaletteForBackground = 0
+if is_apple:
+    renderView1.UseColorPaletteForBackground = 0
 
 # Properties modified on renderView1
 renderView1.Background = [1.0, 1.0, 1.0]
@@ -305,13 +322,14 @@ vesselsDisplay.SetScalarBarVisibility(renderView1, False)
 SetActiveSource(tumorCells)
 
 # reset view to fit data bounds
-renderView1.ResetCamera(-262.0887756347656, 217.981689453125, -238.97984313964844, 279.3093566894531, -190.99217224121094, 260.3154602050781, True)
+# renderView1.ResetCamera(-262.0887756347656, 217.981689453125, -238.97984313964844, 279.3093566894531, -190.99217224121094, 260.3154602050781, True)
 
 # reset view to fit data
-renderView1.ResetCamera(True)
+if is_apple:
+    renderView1.ResetCamera(True)
 
 # reset view to fit data bounds
-renderView1.ResetCamera(-262.0887756347656, 217.981689453125, -238.97984313964844, 279.3093566894531, -190.99217224121094, 260.3154602050781, True)
+# renderView1.ResetCamera(-262.0887756347656, 217.981689453125, -238.97984313964844, 279.3093566894531, -190.99217224121094, 260.3154602050781, True)
 
 # set active source
 SetActiveSource(vessels)
@@ -368,6 +386,25 @@ renderView1.CameraViewUp = [0.40610053533118645, -0.05575855289071093, 0.9121257
 renderView1.CameraViewAngle = 27.646479566715904
 renderView1.CameraParallelScale = 419.1568695648053
 
+# Enable OSPRay for rendering on server
+if not is_apple:
+    pm = paraview.servermanager.vtkSMProxyManager
+    if pm.GetVersionMajor() == 5 and pm.GetVersionMinor() < 7:
+        renderView1.EnableOSPRay = 1
+        renderView1.OSPRayRenderer = "pathtracer"
+    else:
+        renderView1.EnableRayTracing = 1
+        renderView1.BackEnd = "OSPRay raycaster"
+        renderView1.Denoise = 1
+    # Properties modified on renderView1
+    renderView1.Shadows = 1
+    # Properties modified on renderView1
+    renderView1.SamplesPerPixel = 10
+    renderView1.AmbientSamples = 2
+    # For unclear reasons, the line below makes our life miserable
+    # renderView1.UseToneMapping = 1
+
+
 # save animation
 SaveAnimation(folder + '/ParaView/timestep.png', renderView1, ImageResolution=[2124, 1354],
     FontScaling='Scale fonts proportionally',
@@ -378,7 +415,7 @@ SaveAnimation(folder + '/ParaView/timestep.png', renderView1, ImageResolution=[2
     FrameWindow=[0, 199], 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'],
+    # MetaData=['Application', 'ParaView'],
     SuffixFormat='.%04d')
 
 #================================================================

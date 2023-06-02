@@ -19,6 +19,9 @@ from paraview.simple import *
 #### disable automatic camera reset on 'Show'
 paraview.simple._DisableFirstRenderCameraReset()
 
+# determine if we are running on an apple system
+is_apple = sys.platform == "darwin"
+
 # get active view
 renderView1 = GetActiveViewOrCreate('RenderView')
 
@@ -37,6 +40,10 @@ SetActiveView(renderView1)
 
 # find source
 tumorCells = FindSource('TumorCells')
+
+# Fix resolution for spheres
+tumorCells.GlyphType.ThetaResolution = 20
+tumorCells.GlyphType.PhiResolution = 20
 
 # set active source
 SetActiveSource(tumorCells)
@@ -158,6 +165,7 @@ Hide(tRAconcentration, renderView1)
 
 # find source
 vessels = FindSource('Vessels')
+vessels.GlyphType.Resolution = 40
 
 # set active source
 SetActiveSource(vessels)
@@ -172,7 +180,8 @@ renderView1.Update()
 renderView1.Update()
 
 # reset view to fit data
-renderView1.ResetCamera(False)
+if is_apple:
+    renderView1.ResetCamera(False)
 
 # set scalar coloring
 ColorBy(vesselsDisplay, ('POINTS', 'diameter_'))
@@ -237,10 +246,17 @@ vesselsDisplay.RescaleTransferFunctionToDataRange(False, True)
 # invert the transfer function
 diameter_LUT.InvertTransferFunction()
 
+# Rescale transfer function
+diameter_LUT.RescaleTransferFunction(2.5, 42.0)
+
+# Rescale transfer function
+diameter_PWF.RescaleTransferFunction(2.5, 42.0)
+
 animationScene1.GoToFirst()
 
 # Properties modified on renderView1
-renderView1.UseColorPaletteForBackground = 0
+if is_apple:
+    renderView1.UseColorPaletteForBackground = 0
 
 # Properties modified on renderView1
 renderView1.Background = [1.0, 1.0, 1.0]
@@ -757,6 +773,24 @@ renderView1.CameraFocalPoint = [28.606781005859393, 0.5750122070312493, 2.516967
 renderView1.CameraViewUp = [0.41909654136195895, -0.035372467425866486, 0.907252378099198]
 renderView1.CameraParallelScale = 1440.903955915933
 
+# Enable OSPRay for rendering on server
+if not is_apple:
+    pm = paraview.servermanager.vtkSMProxyManager
+    if pm.GetVersionMajor() == 5 and pm.GetVersionMinor() < 7:
+        renderView1.EnableOSPRay = 1
+        renderView1.OSPRayRenderer = "pathtracer"
+    else:
+        renderView1.EnableRayTracing = 1
+        renderView1.BackEnd = "OSPRay raycaster"
+        renderView1.Denoise = 1
+    # Properties modified on renderView1
+    renderView1.Shadows = 1
+    # Properties modified on renderView1
+    renderView1.SamplesPerPixel = 10
+    renderView1.AmbientSamples = 2
+    # For unclear reasons, the line below makes our life miserable
+    # renderView1.UseToneMapping = 1
+
 # save screenshot
 SaveScreenshot(folder + '/ParaView/01-VEGF.png', renderView1, ImageResolution=[1998, 1680],
     FontScaling='Scale fonts proportionally',
@@ -765,7 +799,8 @@ SaveScreenshot(folder + '/ParaView/01-VEGF.png', renderView1, ImageResolution=[1
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # hide data in view
 Hide(vEGFconcentration, renderView1)
@@ -823,7 +858,8 @@ SaveScreenshot(folder + '/ParaView/02-proliferative-start.png', renderView1, Ima
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # Properties modified on animationScene1
 animationScene1.AnimationTime = 101.0
@@ -845,7 +881,8 @@ SaveScreenshot(folder + '/ParaView/03-final-vasculature.png', renderView1, Image
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # set active source
 SetActiveSource(tumorCells)
@@ -1203,7 +1240,8 @@ SaveScreenshot(folder + '/ParaView/03-final-vasculature-with-nutrients.png', ren
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # Properties modified on animationScene1
 animationScene1.AnimationTime = 80.0
@@ -1291,7 +1329,8 @@ SaveScreenshot(folder + '/ParaView/02-proliferative-start-with-nutrients.png', r
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # hide data in view
 Hide(nutrientsconcentration, renderView1)
@@ -1388,7 +1427,8 @@ SaveScreenshot(folder + '/ParaView/04-final-tumor-before-treatment.png', renderV
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # Properties modified on animationScene1
 animationScene1.AnimationTime = 159.0
@@ -1689,7 +1729,8 @@ SaveScreenshot(folder + '/ParaView/05-treatment.png', renderView1, ImageResoluti
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 # hide data in view
 Hide(tRAconcentration, renderView1)
@@ -1717,7 +1758,8 @@ SaveScreenshot(folder + '/ParaView/06-post-treatment.png', renderView1, ImageRes
     TransparentBackground=0, 
     # PNG options
     CompressionLevel='5',
-    MetaData=['Application', 'ParaView'])
+    # MetaData=['Application', 'ParaView']
+)
 
 #================================================================
 # addendum: following script captures some of the application
