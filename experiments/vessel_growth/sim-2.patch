@@ -223,6 +223,24 @@ index 530ee88..cd16b30 100644
      param->visualization_interval = static_cast<uint32_t>(std::floor(
          static_cast<double>(param->Get<SimParam>()->visualization_interval) /
          param->simulation_time_step));
+diff --git a/src/modules/tumor_cell.cc b/src/modules/tumor_cell.cc
+index 1fda9ed..af9313e 100644
+--- a/src/modules/tumor_cell.cc
++++ b/src/modules/tumor_cell.cc
+@@ -186,6 +186,13 @@ Double3 TumorCell::CalculateDisplacement(const InteractionForce* force,
+   // boundary if we are getting to close to the boundary.
+   displacement = velocity * param->simulation_time_step *
+                  sparam->force_calculation_frequency;
++
++  // 6) Limit the displacement to 10
++  double displacement_norm = displacement.Norm();
++  if (displacement_norm > 10) {
++    displacement *= 10 / displacement_norm;
++  }
++
+   LimitDisplacementAtBoundary(displacement);
+   return displacement;
+ }
 diff --git a/src/modules/vessel.cc b/src/modules/vessel.cc
 index 106ce9b..ab72b7c 100644
 --- a/src/modules/vessel.cc
