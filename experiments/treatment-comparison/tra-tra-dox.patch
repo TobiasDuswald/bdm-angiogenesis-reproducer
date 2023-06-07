@@ -351,10 +351,18 @@ index df218ae..5ef0c1c 100644
 +
  }  // namespace bdm
 diff --git a/src/modules/treatment.h b/src/modules/treatment.h
-index d43aae8..42fa3ba 100644
+index d43aae8..f90d679 100644
 --- a/src/modules/treatment.h
 +++ b/src/modules/treatment.h
-@@ -56,6 +56,9 @@ class Treatment {
+@@ -14,6 +14,7 @@
+ #ifndef TREATMENT_H_
+ #define TREATMENT_H_
+ 
++#include <string>
+ #include <vector>
+ 
+ namespace bdm {
+@@ -56,6 +57,9 @@ class Treatment {
      dox_end_ = dox_end;
    }
  
@@ -364,7 +372,7 @@ index d43aae8..42fa3ba 100644
   private:
    std::vector<double> vessel_permeability;
  
-@@ -69,7 +72,7 @@ class Treatment {
+@@ -69,7 +73,7 @@ class Treatment {
  
    // Vessel permeability parameters
    double vessel_permeability_0_ = 0.0;
