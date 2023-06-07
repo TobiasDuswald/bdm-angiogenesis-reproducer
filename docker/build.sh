@@ -23,7 +23,7 @@ DockerChecks
 # make tmp copy of pom such that it can be copied into the 
 # container. Docker doesn't support copying files outside
 # the build context.
-cp ../other-tools/cx3d/pom.xml .
+cp ../util/cx3d/pom.xml .
 cp ../util/setup-profiling-env.sh .
 cp -r ../util/vim .
 
