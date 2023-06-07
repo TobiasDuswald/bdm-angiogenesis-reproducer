@@ -173,6 +173,13 @@ function build(){
         echo -e "${RED}<build> Error: Directory <$1> does not exist${NC}"
         return 1
     fi
+    # Define additional cmake arguments, if the the directory name is
+    # "biodynamo", then we build with the flag "-Dtest=off"
+    CMAKEARGS=""
+    if [[ "$1" == *"/biodynamo" ]]; then
+        echo -e "${GREEN}<build> Building biodynamo with -Dtest=off${NC}"
+        CMAKEARGS="-Dtest=off"
+    fi
     # Get the number of cores
     if [[ "$OSTYPE" == "darwin"* ]]; then
         CORES=$(sysctl -n hw.ncpu)
@@ -184,7 +191,7 @@ function build(){
     # Build the source code
     mkdir -p "$1/build"
     cd "$1/build"
-    cmake ..
+    cmake $CMAKEARGS ..
     make -j $CORES
 }
 
