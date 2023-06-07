@@ -15,7 +15,7 @@ runs, and postprocessing in convenient bash scripts to simplify reproducibility.
 To reproduce an experiment, simply execute the `run.sh` in 
 `experiments/<some-experiment>/`.
 
-## Known issues
+## Update / Init Submodules
 
 If you clone this repository, it might happen that the submodules are not
 cloned. E.g., if you
@@ -29,3 +29,23 @@ e.g., run
 ```bash
 git submodule update --init --force --remote
 ```
+
+## Python packages
+
+See `pip-packages.txt`:
+```
+numpy matplotlib seaborn pandas
+```
+
+## System Dependencies
+
+The system dependencies are identical to the ones of BioDynaMo.
+They are detailed in the BioDynaMo repository
+[`doc/user_guide/prerequisites.md`](https://github.com/BioDynaMo/biodynamo/blob/e327e53c4bec8f9a83d53562dbe6155bd43e032f/doc/user_guide/prerequisites.md).
+To install the dependencies, you may either follow the description above 
+or simply execute the script
+```
+./biodynamo/prerequisites.sh all
+```
+Additionally, the module `rsync` must be available on your system. The module
+is used to extract and save the results after simulation / postprocessing.
