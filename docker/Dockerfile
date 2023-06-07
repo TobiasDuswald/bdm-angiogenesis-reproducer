@@ -83,6 +83,7 @@ RUN sudo apt update && sudo apt install -y \
   lshw \
   sysbench \
   cloc \
+  rsync \
   maven 
 
 # Install pyenv
@@ -103,6 +104,8 @@ RUN /bin/bash -c '\
   matplotlib \
   statistics \
   pygal \
+  pandas \
+  seaborn \
   glances'
 
 # preserve the environment variable BDM_LOCAL_LFS when calling scripts with
@@ -131,12 +134,6 @@ COPY vim/.vimrc.plugins /home/testuser/.vimrc.plugins
 COPY vim/setup-vim.sh /home/testuser
 RUN sudo chmod +x /home/testuser/setup-vim.sh
 RUN cd /home/testuser && ./setup-vim.sh
-
-# NetLogo
-RUN cd /home/testuser && \
-    wget http://ccl.northwestern.edu/netlogo/6.2.0/NetLogo-6.2.0-64.tgz && \
-    tar -xzf NetLogo-6.2.0-64.tgz && \
-    mv 'NetLogo 6.2.0' NetLogo-6.2.0    
 
 # BDM_LOCAL_LFS 
 # Include third_party packages so they don't need to be downloaded.
