@@ -12,7 +12,7 @@
 #
 # -----------------------------------------------------------------------------
 
-FROM nvidia/cuda:11.0-devel-ubuntu20.04 
+FROM ubuntu:20.04 
 
 MAINTAINER Lukas Breitwieser
 
@@ -200,11 +200,11 @@ RUN echo "deb http://ddebs.ubuntu.com $(lsb_release -cs) main restricted univers
   sudo apt-get update && \
   sudo apt-get install -y \
                        g++9-dbgsym \
-                       libgomp1-dbgsym \
+                      #  libgomp1-dbgsym \
                        libjemalloc2-dbgsym \
                        libnuma1-dbgsym \
                        libopenmpi3-dbgsym \
-                       zlib1g-dbgsym \
+                      #  zlib1g-dbgsym \
                        libc6-dbg \
                        libstdc++6-9-dbg
 
