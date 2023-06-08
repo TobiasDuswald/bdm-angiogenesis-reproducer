@@ -64,17 +64,22 @@ docker/build.sh
 To reproduce everything (except the large-scale simulation), execute
 ```bash
 docker/run.sh ./run-experiments.sh
+
 ```
+To run the large-scale simulation, execute 
+```bash
+docker/run.sh ./run-large-scale.sh
+```
+but expect a runtime of *multiple days*.
 
 To reproduce a specific experiment, run
 ```bash
-docker/run.sh  ./experiments/<some-experiment>/run.sh
+docker/run.sh
+docker/exec.sh  
+. util/main.sh
+./experiments/<some-experiment>/run.sh
+exit
 ```
-In particular, to run the large-scale simulation, execute 
-```bash
-docker/run.sh ./experiments/towards_large_scale/run.sh
-```
-but expect a runtime of *multiple days*.
 
 ### 2.3 Retrieving the Results
 
