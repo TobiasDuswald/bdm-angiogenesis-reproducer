@@ -10,10 +10,10 @@
 BDM_DOCKER_DIR=$(readlink -e $(dirname "${BASH_SOURCE[0]}"))
 
 # Image name and container name
-export BDM_DOCKER_IMAGE_VERSION=v7
-export BDM_DOCKER_IMAGE=bdm-publication-image-${BDM_DOCKER_IMAGE_VERSION}
+export BDM_DOCKER_IMAGE_VERSION=v1
+export BDM_DOCKER_IMAGE=bdm-reproducer-image-${BDM_DOCKER_IMAGE_VERSION}
 if [ ! -f $BDM_DOCKER_DIR/container-${BDM_DOCKER_IMAGE_VERSION}.name ]; then
-  echo "bdm-publication-${BDM_DOCKER_IMAGE_VERSION}-$RANDOM" > "$BDM_DOCKER_DIR/container-${BDM_DOCKER_IMAGE_VERSION}.name"
+  echo "bdm-reproducer-${BDM_DOCKER_IMAGE_VERSION}-$RANDOM" > "$BDM_DOCKER_DIR/container-${BDM_DOCKER_IMAGE_VERSION}.name"
 fi
 export BDM_CONTAINER=$(cat "$BDM_DOCKER_DIR/container-${BDM_DOCKER_IMAGE_VERSION}.name")
 
