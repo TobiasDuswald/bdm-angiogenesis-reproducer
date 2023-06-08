@@ -62,6 +62,6 @@ EchoNewStep "Finished"
 echo "$BDM_COMMAND return code was: $RETURN_VAL"
 echo "The container '$BDM_CONTAINER' is still running."
 echo "You can connect to it by calling 'docker/exec.sh /bin/bash'"
-echo "from the directory $PROJECT_ROOT_DIR/bdm-paper-examples"
+echo "from the directory $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer"
 exit $RETURN_VAL
 

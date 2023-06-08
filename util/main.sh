@@ -9,7 +9,7 @@
 
 export PROJECT_ROOT_DIR=$(readlink -e $(dirname "${BASH_SOURCE[0]}")/../..)
 export INSTALL_DIR=$PROJECT_ROOT_DIR/opt
-export RESULT_DIR=$PROJECT_ROOT_DIR/bdm-paper-examples/result
+export RESULT_DIR=$PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/result
 export RESULT_METADATA_DIR=$RESULT_DIR/metadata
 export TMP_DIR=$(dirname $(mktemp -u))
 
@@ -22,7 +22,7 @@ if [ $(echo "$PROJECT_ROOT_DIR" | grep -c " ") != 0 ]; then
 fi
 
 # determine machine specific configuration
-export MACHINE_SPECIFIC_DIR=$PROJECT_ROOT_DIR/bdm-paper-examples/util/machine-specific/$(hostname)
+export MACHINE_SPECIFIC_DIR=$PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/machine-specific/$(hostname)
 if [ ! -d "$MACHINE_SPECIFIC_DIR" ]; then
   echo "ERROR: Could not find directory with machine specific configuration files!"
   echo "       ($MACHINE_SPECIFIC_DIR)"
@@ -53,7 +53,7 @@ fi
 # Returns the number of CPU cores on numa node 0 
 # excluding hyperthreads
 function CPUCountNuma {
-  $PROJECT_ROOT_DIR/bdm-paper-examples/util/get_cpus_in_numa.py
+  $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/get_cpus_in_numa.py
 }
 
 # Returns the number of CPU cores including hyperthreads
@@ -139,7 +139,7 @@ function CheckOpenGLVersion {
 function bdmTaskset {
   local NUM_THREADS=$1
   shift
-  taskset -c $($PROJECT_ROOT_DIR/bdm-paper-examples/util/get_cpu_list.py $NUM_THREADS) "$@"
+  taskset -c $($PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/get_cpu_list.py $NUM_THREADS) "$@"
 }
 
 # Executes a given command with the specified number of physical CPUS with their.
@@ -151,7 +151,7 @@ function bdmTaskset {
 function bdmTasksetPhysicalCpus {
   local NUM_CPUS=$1
   shift
-  taskset -c $($PROJECT_ROOT_DIR/bdm-paper-examples/util/get_physical_cpu_list.py $NUM_CPUS true) "$@"
+  taskset -c $($PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/get_physical_cpu_list.py $NUM_CPUS true) "$@"
 }
 
 # Execute a given command 5 times and sleep one second between invocations
@@ -321,7 +321,7 @@ function benchmarkGpu {
     echo "bdmTaskset $CPUS $@ --inline-config="{ \"bdm::Param\": { \"preferred_gpu\": $BDM_GPU } }" >> $BENCH_LOG 2>&1"
     echo "Iteration: $i"
     echo ""
-    taskset -c $($PROJECT_ROOT_DIR/bdm-paper-examples/util/get_cpu_list.py $CPUS) $@ --inline-config="{ \"bdm::Param\": { \"preferred_gpu\": $BDM_GPU } }" >> $BENCH_LOG 2>&1
+    taskset -c $($PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/get_cpu_list.py $CPUS) $@ --inline-config="{ \"bdm::Param\": { \"preferred_gpu\": $BDM_GPU } }" >> $BENCH_LOG 2>&1
     echo ""
     echo "End   `date`"
     echo "---------------------------------------------------------------------"
@@ -638,7 +638,7 @@ function verify {
   fi
 
   # check git repositories version
-  for repo in "biodynamo" "bdm-paper-examples"; do
+  for repo in "biodynamo" "bdm-angiogenesis-reproducer"; do
     if [ -f "${REPRODUCE_MD_DIR}/$repo.commit" ]; then
       cd "$PROJECT_ROOT_DIR/$repo"
 
@@ -702,7 +702,7 @@ function verify {
 }
 
 function collectMetadata {
-  cp $PROJECT_ROOT_DIR/bdm-paper-examples/util/reproduce/* $RESULT_DIR
+  cp $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/reproduce/* $RESULT_DIR
 
   mkdir -p $RESULT_METADATA_DIR
   local LOG=$RESULT_METADATA_DIR/log
@@ -712,14 +712,14 @@ function collectMetadata {
   mkdir -p "${REPRODUCE_MD_DIR}"
   echo $BDM_DOCKER_IMAGE_ID > ${REPRODUCE_MD_DIR}/docker-image-id
 
-  pushd $PROJECT_ROOT_DIR/bdm-paper-examples
+  pushd $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer
   gitRepoMetadata >> $LOG
   cd $PROJECT_ROOT_DIR/biodynamo
   gitRepoMetadata >> $LOG
   popd
   
-  $PROJECT_ROOT_DIR/bdm-paper-examples/util/system-info.sh &> $RESULT_METADATA_DIR/system-info
-  $PROJECT_ROOT_DIR/bdm-paper-examples/util/lines-of-code.sh &> $RESULT_METADATA_DIR/lines-of-code
+  $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/system-info.sh &> $RESULT_METADATA_DIR/system-info
+  $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer/util/lines-of-code.sh &> $RESULT_METADATA_DIR/lines-of-code
 }
 
 function createTarAndShaSum {

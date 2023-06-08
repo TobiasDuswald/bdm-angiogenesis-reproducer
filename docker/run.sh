@@ -105,7 +105,7 @@ fi
 if [[ $# -lt 1 ]]; then
   EchoSuccess "A new container '$BDM_CONTAINER' was started and is running in the background."
   echo "You can connect to it by calling 'docker/exec.sh'"
-  echo "from the directory $PROJECT_ROOT_DIR/bdm-paper-examples"
+  echo "from the directory $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer"
   exit 0
 fi
 
@@ -139,6 +139,6 @@ EchoNewStep "Finished"
 echo "$BDM_SCRIPT return code was: $RETURN_VAL"
 echo "The container '$BDM_CONTAINER' is still running."
 echo "You can connect to it by calling 'docker/exec.sh'"
-echo "from the directory $PROJECT_ROOT_DIR/bdm-paper-examples"
+echo "from the directory $PROJECT_ROOT_DIR/bdm-angiogenesis-reproducer"
 exit $RETURN_VAL
 
