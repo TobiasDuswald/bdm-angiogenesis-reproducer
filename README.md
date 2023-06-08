@@ -56,9 +56,7 @@ docker/build.sh
 ### 2.2 Running the container & reproducing the results
 
 ```bash
-docker/run.sh
-docker/exec.sh
-./run-experiments.sh
+docker/run.sh ./run-experiments.sh
 ```
 
 ### 2.3 Retrieving the results
@@ -77,7 +75,7 @@ and needs to be updated. Please open an issue if you encounter any issues.
 
 In the first step, you'll need to install the packages listed in 3.1 and 3.2.
 Note that you must install the pip packages in the same environment as BioDynaMo
-uses. Afterwards you may run
+uses. Afterwards, you may run
 ```bash
 ./run-experiments.sh
 ```
