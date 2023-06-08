@@ -37,6 +37,12 @@ infrastructure is based on Lukas Breitwieser's work and we would like to thank
 him for sharing it with us. Docker avoids
 problems with setting up your system for the code to compile and run.
 
+Having docker installed is, obviously, a prerequisite.
+(Start docker.service if necessary)
+The scripts assume that your `$USER` belongs to the docker
+group. See [here](https://docs.docker.com/engine/install/linux-postinstall/).
+(no sudo calls).
+
 ### 2.1 Loading the container (recommended)
 
 ToDO
