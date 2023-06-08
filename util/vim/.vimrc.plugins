@@ -1,0 +1,45 @@
+" -----------------------------------------------------------------------------
+" vim-plug section
+
+" install vim-plug
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+"    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
+" Specify a directory for plugins
+" - For Neovim: stdpath('data') . '/plugged'
+" - Avoid using standard Vim directory names like 'plugin'
+call plug#begin('~/.vim/plugged')
+
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+" Plug 'ctrlpvim/ctrlp.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'eugen0329/vim-esearch'
+" Plug '907th/vim-auto-save'
+" Switch between source and header file
+" Plug 'liuchengxu/vista.vim'
+Plug 'ericcurtin/CurtineIncSw.vim'
+Plug 'preservim/nerdcommenter'
+Plug 'bfrg/vim-cpp-modern'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+" Plug 'vim-airline/vim-airline'
+Plug 'ludovicchabant/vim-gutentags'
+" Plug 'majutsushi/tagbar'
+Plug 'powerman/vim-plugin-autosess'
+Plug 'easymotion/vim-easymotion'
+Plug 'cespare/vim-toml'
+Plug 'will133/vim-dirdiff'
+" color schemes
+" Plug 'sickill/vim-monokai'
+" Plug 'flrnd/candid.vim'
+" Plug 'mhartington/oceanic-next'
+" Plug 'morhetz/gruvbox'
+Plug 'joshdick/onedark.vim'
+" Initialize plugin system
+call plug#end()
+
+" end vim-plug section
+" -----------------------------------------------------------------------------
+
