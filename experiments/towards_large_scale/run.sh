@@ -42,7 +42,7 @@ build $SIMDIR
 # 3. Run the simulation
 # -----------------------------------------------------------------------------
 cd $SIMDIR
-./scripts/experiments/run_large_scale.sh
+./scripts/experiments/run_full_scale_model.sh
 cd $DIR
 python postprocess.py
 copy_results $SIMDIR/output/angiogenesis $DIR/results/
