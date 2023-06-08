@@ -37,12 +37,13 @@ SIMCOMMIT=$(cat $DIR/sim-commit.txt)
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/sim.patch
 build $SIMDIR
+cp $SIMDIR/scripts/experiments/parameter/full_scale.json $SIMDIR/bdm.json
 
 # -----------------------------------------------------------------------------
 # 3. Run the simulation
 # -----------------------------------------------------------------------------
 cd $SIMDIR
-./scripts/experiments/run_full_scale_model.sh
+run_simulation $SIMDIR
 cd $DIR
 python postprocess.py
 copy_results $SIMDIR/output/angiogenesis $DIR/results/
