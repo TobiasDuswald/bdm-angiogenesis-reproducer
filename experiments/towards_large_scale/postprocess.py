@@ -87,9 +87,6 @@ def ComputeAdditionalTimeSeries(data):
 
 def PlotSingleTimeSeries(data, growth_data):
 
-    # Use LaTeX font
-    plt.rc("text", usetex=True)
-
     # Subplots (two rows, one column) with shared x-axis
     fig, ax = plt.subplots(2, 1, sharex=True, figsize=(9, 6))
 
@@ -163,8 +160,8 @@ def PlotSingleTimeSeries(data, growth_data):
 
 
     # Set axis labels
-    ax[0].set_ylabel("Tumor volume (mm$^3$)")
-    ax[1].set_ylabel("Tumor volume (mm$^3$)")
+    ax[0].set_ylabel("Tumor volume (mm^3)")
+    ax[1].set_ylabel("Tumor volume (mm^3)")
     ax[1].set_xlabel("Time (days)")
 
     # Show legends
