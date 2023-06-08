@@ -3,17 +3,19 @@
 This repository contains scripts and parameters to reproduce the results of the
 hybrid model for vascular cancer growth and treatment simulation. 
 
-To ensure reproducibility, we need to consider three major factors. 
+To ensure reproducibility, we need to consider four major factors. 
 1. The BioDynaMo repository
 2. The application code in the angiogenesis repository
 3. The parameters for the application
+4. The postprocessing pipelines
 
 In this repository, we specify the necessary code states of both repositories
 and the parameters for each experiment. We wrap the compilation, simulation
 runs, and postprocessing in convenient bash scripts to simplify reproducibility.
 
 To reproduce an experiment, simply execute the `run.sh` in 
-`experiments/<some-experiment>/`.
+`experiments/<some-experiment>/` after following the instructions for setting
+up your system below.
 
 ## 1. Update / Init Submodules
 
@@ -45,7 +47,11 @@ group. See [here](https://docs.docker.com/engine/install/linux-postinstall/).
 
 ### 2.1 Loading the container (recommended)
 
-ToDO
+```bash
+wget http://cern.ch/biodynamo-lfs/cancer-model/bdm-reproducer-image-v1-docker-image-02a59fd5d670.tar.gz
+docker/load.sh bdm-reproducer-image-v1-docker-image-02a59fd5d670.tar.gz
+rm bdm-reproducer-image-v1-docker-image-02a59fd5d670.tar.gz # free space
+```
 
 ### 2.1* Building the container (alternative, not recommended)
 
@@ -59,14 +65,14 @@ docker/build.sh
 docker/run.sh ./run-experiments.sh
 ```
 
-### 2.3 Retrieving the results
+### 2.3 Retrieving the Results
 
 All results are located in the experiments folder, e.g., they can be found in
 `experiments/<experiment-name>/results/*`.
 
 ## 3. Reproducing with system installation
 
-We (stongly) recommend using the Docker image. However, if for some reason you
+We (strongly) recommend using the Docker image. However, if for some reason you
 wish to run
 without docker, you will have to make sure that all dependencies are installed.
 Ubuntu 20.04 or 22.04 are recommended. MacOS might work, but we expect that as
@@ -75,7 +81,7 @@ and needs to be updated. Please open an issue if you encounter any issues.
 
 In the first step, you'll need to install the packages listed in 3.1 and 3.2.
 Note that you must install the pip packages in the same environment as BioDynaMo
-uses. Afterwards, you may run
+uses. Afterward, you may run
 ```bash
 ./run-experiments.sh
 ```
@@ -98,4 +104,4 @@ or simply execute the script
 ./biodynamo/prerequisites.sh all
 ```
 Additionally, the module `rsync` must be available on your system. The module
-is used to extract and save the results after simulation / postprocessing.
+is used to extract and save the results after simulation/postprocessing.
