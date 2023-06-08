@@ -48,6 +48,11 @@ cd $DIR
 python postprocess.py
 copy_results $SIMDIR/output/angiogenesis $DIR/results/
 mv large-scale.pdf $DIR/results/
+echo ""
+echo -e "${GREEN} ############################################### ${NC}"
+echo -e "${GREEN} Success: result in $DIR/results/large-scale.pdf ${NC}"
+echo -e "${GREEN} ############################################### ${NC}"
+echo ""
 
 # -----------------------------------------------------------------------------
 # 4. Cleanup
