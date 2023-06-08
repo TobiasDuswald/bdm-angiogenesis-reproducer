@@ -61,9 +61,20 @@ docker/build.sh
 
 ### 2.2 Running the container & reproducing the results
 
+To reproduce everything (except the large-scale simulation), execute
 ```bash
 docker/run.sh ./run-experiments.sh
 ```
+
+To reproduce a specific experiment, run
+```bash
+docker/run.sh  ./experiments/<some-experiment>/run.sh
+```
+In particular, to run the large-scale simulation, execute 
+```bash
+docker/run.sh ./experiments/towards_large_scale/run.sh
+```
+but expect a runtime of *multiple days*.
 
 ### 2.3 Retrieving the Results
 
@@ -81,10 +92,8 @@ and needs to be updated. Please open an issue if you encounter any issues.
 
 In the first step, you'll need to install the packages listed in 3.1 and 3.2.
 Note that you must install the pip packages in the same environment as BioDynaMo
-uses. Afterward, you may run
-```bash
-./run-experiments.sh
-```
+uses. Afterward, execute the commands of section 2.2 ignoring the
+`docker/run.sh`.
 
 ### 3.1 Python packages
 
