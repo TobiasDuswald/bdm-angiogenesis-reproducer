@@ -64,8 +64,8 @@ docker/build.sh
 To reproduce everything (except the large-scale simulation), execute
 ```bash
 docker/run.sh ./run-experiments.sh
-
 ```
+
 To run the large-scale simulation, execute 
 ```bash
 docker/run.sh ./run-large-scale.sh
