@@ -29,7 +29,8 @@ export PATH="$HOME/NetLogo-6.2.0:$PATH"
 if [ -z "$DISPLAY" ] || ! glxinfo &>/dev/null; then
   echo "INFO: Use xvfb"
   export DISPLAY=:99.0
-  $PROJECT_ROOT_DIR/biodynamo/util/xvfb-initd.sh start
+  MYDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+  $MYDIR/../../../biodynamo/util/xvfb-initd.sh start
 fi
 
 export BDM_LOCAL_LFS=~/bdm-local-lfs
