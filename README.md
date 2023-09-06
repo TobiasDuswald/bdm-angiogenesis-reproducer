@@ -61,30 +61,47 @@ docker/build.sh
 
 ### 2.2 Running the container & reproducing the results
 
+Reproducing the results may take some time. If you are familiar with `screen` or
+`tmux`, it might be a good idea to launch a screen session before following
+the instructions below.
+
+To reproduce the findings, you first need to start the docker container and
+start an interactive session, i.e., execute the following two scripts:
+```bash
+docker/run.sh
+docker/exec.sh 
+```
+After executing the second script, you are inside the docker container. Your
+user name should say something along the lines of `testuser@docker-container`
+and if you write `echo $HOSTNAME` it should return `docker-container`.
+
 To reproduce everything (except the large-scale simulation), execute
 ```bash
-docker/run.sh ./run-experiments.sh
+./run-experiments.sh
 ```
+Note that the last experiment (tumor spheroid) may take some time and also 
+requires quite some RAM for rendering. 
 
 To run the large-scale simulation, execute 
 ```bash
-docker/run.sh ./run-large-scale.sh
+./run-large-scale.sh
 ```
 but expect a runtime of *multiple days*.
 
 To reproduce a specific experiment, run
-```bash
-docker/run.sh
-docker/exec.sh  
+```bash 
 . util/main.sh
 ./experiments/<some-experiment>/run.sh
-exit
+./experiments/<another-experiment>/run.sh
 ```
+
+Leave the container with `exit`.
 
 ### 2.3 Retrieving the Results
 
 All results are located in the experiments folder, e.g., they can be found in
-`experiments/<experiment-name>/results/*`.
+`experiments/<experiment-name>/results/*`. ParaView output is usually located
+in `experiments/<experiment-name>/results/ParaView/*`.
 
 ## 3. Reproducing with system installation
 
