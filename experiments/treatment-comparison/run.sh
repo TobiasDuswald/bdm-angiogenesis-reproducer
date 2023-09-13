@@ -51,7 +51,9 @@ for i in $(seq 1 $NUM_RUNS); do
 done
 cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
+replace $DIR/postprocess.py "yupper = 6000" "yupper = 14000"
 python $DIR/postprocess.py
+replace $DIR/postprocess.py "yupper = 14000" "yupper = 6000"
 copy_results $SIMDIR/output $DIR/results/dox
 rm -rf $SIMDIR/output
 cd $DIR
@@ -79,7 +81,7 @@ rm -rf $SIMDIR/output
 cd $DIR
 
 # -----------------------------------------------------------------------------
-# 6. Setup & build TRA TRA DOX second simulation
+# 6. Setup & build TRA TRA DOX simulation
 # -----------------------------------------------------------------------------
 reset_repository $SIMDIR
 checkout $SIMDIR $SIMCOMMIT
@@ -87,7 +89,7 @@ apply_patch $SIMDIR $DIR/tra-tra-dox.patch
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
-# 7. Run the second simulation & analyze the results
+# 7. Run the TRA TRA DOX simulation & analyze the results
 # -----------------------------------------------------------------------------
 for i in $(seq 1 $NUM_RUNS); do
   echo -e "${GREEN}Running simulation $i/$NUM_RUNS...${NC}"
@@ -101,7 +103,7 @@ rm -rf $SIMDIR/output
 cd $DIR
 
 # -----------------------------------------------------------------------------
-# 8. Setup & build DOX TRA TRA second simulation
+# 8. Setup & build DOX TRA TRA simulation
 # -----------------------------------------------------------------------------
 reset_repository $SIMDIR
 checkout $SIMDIR $SIMCOMMIT
@@ -117,8 +119,34 @@ for i in $(seq 1 $NUM_RUNS); do
 done
 cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
+replace $DIR/postprocess.py "yupper = 6000" "yupper = 14000"
 python $DIR/postprocess.py
+replace $DIR/postprocess.py "yupper = 14000" "yupper = 6000"
 copy_results $SIMDIR/output $DIR/results/dox-tra-tra
+rm -rf $SIMDIR/output
+cd $DIR
+
+# -----------------------------------------------------------------------------
+# 10. Setup & build 2x(TRA + DOX) simulation
+# -----------------------------------------------------------------------------
+reset_repository $SIMDIR
+checkout $SIMDIR $SIMCOMMIT
+apply_patch $SIMDIR $DIR/tradox-tradox.patch
+build $SIMDIR
+
+# -----------------------------------------------------------------------------
+# 9. Run the 2x(TRA + DOX) simulation & analyze the results
+# -----------------------------------------------------------------------------
+for i in $(seq 1 $NUM_RUNS); do
+  echo -e "${GREEN}Running simulation $i/$NUM_RUNS...${NC}"
+  run_simulation $SIMDIR
+done
+cd $SIMDIR
+echo -e "${GREEN}Running post-processing script...${NC}"
+replace $DIR/postprocess.py "simultaneously = False" "simultaneously = True"
+python $DIR/postprocess.py
+replace $DIR/postprocess.py "simultaneously = True" "simultaneously = False"
+copy_results $SIMDIR/output $DIR/results/tradox-tradox
 rm -rf $SIMDIR/output
 cd $DIR
 
