@@ -51,7 +51,7 @@ for i in $(seq 1 $NUM_RUNS); do
 done
 cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
-replace "yupper = 6000" "yupper = 14000" $DIR/postprocess.py
+replace $DIR/postprocess.py "yupper = 6000" "yupper = 14000"
 python $DIR/postprocess.py
 git checkout -- $DIR/postprocess.py
 copy_results $SIMDIR/output $DIR/results/dox
@@ -119,7 +119,9 @@ for i in $(seq 1 $NUM_RUNS); do
 done
 cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
+replace $DIR/postprocess.py "yupper = 6000" "yupper = 14000"
 python $DIR/postprocess.py
+git checkout -- $DIR/postprocess.py
 copy_results $SIMDIR/output $DIR/results/dox-tra-tra
 rm -rf $SIMDIR/output
 cd $DIR
@@ -141,7 +143,7 @@ for i in $(seq 1 $NUM_RUNS); do
 done
 cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
-replace "simultaneously = False" "simultaneously = True" $DIR/postprocess.py
+replace $DIR/postprocess.py "simultaneously = False" "simultaneously = True"
 python $DIR/postprocess.py
 git checkout -- $DIR/postprocess.py
 copy_results $SIMDIR/output $DIR/results/tradox-tradox
