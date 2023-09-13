@@ -15,7 +15,7 @@ source $DIR/../../util/util.sh
 mkdir -p $DIR/results
 
 # Define the number of simulation runs to perform
-NUM_RUNS=10
+NUM_RUNS=3
 
 # -----------------------------------------------------------------------------
 # 0. Make sure that the repositories are clean and up-to-date
@@ -39,6 +39,8 @@ source_bdm
 SIMCOMMIT=$(cat $DIR/sim-commit.txt)
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/dox.patch
+replace $SIMDIR/bdm.json '"zeta_H_D_TRA_DOX": 0' '"zeta_H_D_TRA_DOX": 50'
+replace $SIMDIR/bdm.json '"zeta_Q_D_TRA_DOX": 0' '"zeta_Q_D_TRA_DOX": 50'
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
@@ -64,6 +66,8 @@ cd $DIR
 reset_repository $SIMDIR
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/tra-tra.patch
+replace $SIMDIR/bdm.json '"zeta_H_D_TRA_DOX": 0' '"zeta_H_D_TRA_DOX": 50'
+replace $SIMDIR/bdm.json '"zeta_Q_D_TRA_DOX": 0' '"zeta_Q_D_TRA_DOX": 50'
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
@@ -86,6 +90,8 @@ cd $DIR
 reset_repository $SIMDIR
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/tra-tra-dox.patch
+replace $SIMDIR/bdm.json '"zeta_H_D_TRA_DOX": 0' '"zeta_H_D_TRA_DOX": 50'
+replace $SIMDIR/bdm.json '"zeta_Q_D_TRA_DOX": 0' '"zeta_Q_D_TRA_DOX": 50'
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
@@ -108,6 +114,8 @@ cd $DIR
 reset_repository $SIMDIR
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/dox-tra-tra.patch
+replace $SIMDIR/bdm.json '"zeta_H_D_TRA_DOX": 0' '"zeta_H_D_TRA_DOX": 50'
+replace $SIMDIR/bdm.json '"zeta_Q_D_TRA_DOX": 0' '"zeta_Q_D_TRA_DOX": 50'
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
@@ -132,6 +140,8 @@ cd $DIR
 reset_repository $SIMDIR
 checkout $SIMDIR $SIMCOMMIT
 apply_patch $SIMDIR $DIR/tradox-tradox.patch
+replace $SIMDIR/bdm.json '"zeta_H_D_TRA_DOX": 0' '"zeta_H_D_TRA_DOX": 50'
+replace $SIMDIR/bdm.json '"zeta_Q_D_TRA_DOX": 0' '"zeta_Q_D_TRA_DOX": 50'
 build $SIMDIR
 
 # -----------------------------------------------------------------------------
