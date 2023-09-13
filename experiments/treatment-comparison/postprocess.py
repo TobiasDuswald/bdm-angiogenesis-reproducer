@@ -120,7 +120,28 @@ def PlotSingleTimeSeries(data):
     plt.legend()
     plt.show()
 
+def vspan_dashed(thisax,xmin, xmax, ymin, ymax, ndash=10,colour1='r',colour2='m'):
+    """ 
+    Function that plots a dashed vertical line across a subplot axis.
+    """
+    dashheight = 1./(2*ndash)
+
+    for j in range(0,ndash):
+        thisax.axvspan(
+                xmin=xmin,xmax=xmax,
+                ymin=2*j*dashheight, ymax=(2*j+1)*dashheight,
+                facecolor=colour1,alpha=0.2,edgecolor='None'
+                )
+        thisax.axvspan(
+                xmin=xmin,xmax=xmax,
+                ymin=(2*j+1)*dashheight,ymax= 2* (j+1)* dashheight,
+                facecolor=colour2,alpha=0.2,edgecolor='None'
+                )
+
 def PlotAggregatedData(data, treatment_plan, folder):
+    global simultaneously
+    global yupper
+
     color_q = "#EDC728"
     color_sg2 = "#1A9C13"
     color_g1 = "#69ED15"
@@ -130,23 +151,45 @@ def PlotAggregatedData(data, treatment_plan, folder):
     color_proliferating = "#e377c2"
     color_total = "#307EC9"
     color_treatment_tra = "fuchsia"
-    color_treatment_rad = "orangered"
+    color_treatment_rad = "lightseagreen"
 
     # Plot the treatment plan
     start_tra_1 = treatment_plan["tra_start_1"] / (60.0 * 24.0)
     end_tra_1 = treatment_plan["tra_end_1"]/ (60.0 * 24.0)
     start_tra_2 = treatment_plan["tra_start_2"]/ (60.0 * 24.0)
     end_tra_2 = treatment_plan["tra_end_2"]/ (60.0 * 24.0)
-    start_dox = treatment_plan["dox_start"]/ (60.0 * 24.0)
-    end_dox = treatment_plan["dox_end"]/ (60.0 * 24.0)
 
     # Set the figure size
     plt.figure(figsize=(5, 3))
 
-    # Plot the treatment plan
-    plt.axvspan(start_tra_1, end_tra_1, color=color_treatment_tra, alpha=0.2, label="TRA")
-    plt.axvspan(start_tra_2, end_tra_2, color=color_treatment_tra, alpha=0.2)
-    plt.axvspan(start_dox, end_dox, color=color_treatment_rad, alpha=0.2, label="DOX")
+
+    # Plot the dashed lines
+    if simultaneously:
+        start_dox_1 = treatment_plan["dox_start_1"]/ (60.0 * 24.0)
+        end_dox_1 = treatment_plan["dox_end_1"]/ (60.0 * 24.0)
+        start_dox_2 = treatment_plan["dox_start_2"]/ (60.0 * 24.0)
+        end_dox_2 = treatment_plan["dox_end_2"]/ (60.0 * 24.0)
+        ax = plt.gca()
+        vspan_dashed(ax, start_tra_1, end_tra_1, 0, 6000, colour1=color_treatment_tra, colour2=color_treatment_rad)
+        vspan_dashed(ax, start_tra_2, end_tra_2, 0, 6000, colour1=color_treatment_tra, colour2=color_treatment_rad)
+        # Plot some lines very far at the end for legend purposes
+        ax.axvspan(
+                    xmin=-100,xmax=-90,
+                    ymin=0, ymax=0,
+                    facecolor=color_treatment_tra,alpha=0.2,edgecolor='None',label="TRA"
+                    )
+        ax.axvspan(
+                    xmin=-100,xmax=-90,
+                    ymin=0,ymax= 0,
+                    facecolor=color_treatment_rad,alpha=0.2,edgecolor='None',label="DOX"
+                    )
+    else:
+        # Plot the treatment plan
+        start_dox_1 = treatment_plan["dox_start"]/ (60.0 * 24.0)
+        end_dox_1 = treatment_plan["dox_end"]/ (60.0 * 24.0)
+        plt.axvspan(start_tra_1, end_tra_1, color=color_treatment_tra, alpha=0.2, label="TRA")
+        plt.axvspan(start_tra_2, end_tra_2, color=color_treatment_tra, alpha=0.2)
+        plt.axvspan(start_dox_1, end_dox_1, color=color_treatment_rad, alpha=0.2, label="DOX")
 
     # Plot the Q data
     plt.plot(
@@ -256,7 +299,7 @@ def PlotAggregatedData(data, treatment_plan, folder):
     )
 
     plt.xlim((60,160))
-    # plt.ylim((0, 8000))
+    plt.ylim((0, yupper))
     plt.xlabel("Time (Days)")
     plt.ylabel("Tumor Cell Count")
     plt.legend()
@@ -273,6 +316,8 @@ def PlotAggregatedData(data, treatment_plan, folder):
 if __name__ == "__main__":
     # Get the directory where this script is located
     import os
+    simultaneously = False
+    yupper = 6000
 
     dir_path = os.path.dirname(os.path.realpath(__file__))
 
