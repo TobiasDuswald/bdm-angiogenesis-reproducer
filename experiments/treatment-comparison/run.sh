@@ -53,8 +53,7 @@ cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
 replace $DIR/postprocess.py "yupper = 6000" "yupper = 14000"
 python $DIR/postprocess.py
-cd $DIR
-git checkout -- postprocess.py
+replace $DIR/postprocess.py "yupper = 14000" "yupper = 6000"
 copy_results $SIMDIR/output $DIR/results/dox
 rm -rf $SIMDIR/output
 cd $DIR
@@ -122,8 +121,7 @@ cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
 replace $DIR/postprocess.py "yupper = 6000" "yupper = 14000"
 python $DIR/postprocess.py
-cd $DIR
-git checkout -- postprocess.py
+replace $DIR/postprocess.py "yupper = 14000" "yupper = 6000"
 copy_results $SIMDIR/output $DIR/results/dox-tra-tra
 rm -rf $SIMDIR/output
 cd $DIR
@@ -147,8 +145,7 @@ cd $SIMDIR
 echo -e "${GREEN}Running post-processing script...${NC}"
 replace $DIR/postprocess.py "simultaneously = False" "simultaneously = True"
 python $DIR/postprocess.py
-cd $DIR
-git checkout -- postprocess.py
+replace $DIR/postprocess.py "simultaneously = True" "simultaneously = False"
 copy_results $SIMDIR/output $DIR/results/tradox-tradox
 rm -rf $SIMDIR/output
 cd $DIR
