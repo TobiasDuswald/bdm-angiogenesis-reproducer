@@ -15,7 +15,7 @@ source $DIR/../../util/util.sh
 mkdir -p $DIR/results
 
 # Define the number of simulation runs to perform
-NUM_RUNS=3
+NUM_RUNS=10
 
 # -----------------------------------------------------------------------------
 # 0. Make sure that the repositories are clean and up-to-date
