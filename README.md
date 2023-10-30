@@ -1,7 +1,9 @@
 # Reproducer for the BDM-Angiogenesis project
 
 This repository contains scripts and parameters to reproduce the results of the
-hybrid model for vascular cancer growth and treatment simulation. 
+manuscript:
+**Bridging scales: A hybrid model to simulate vascular tumor growth and treatment response**
+by Duswald, Lima, Oden, and Wohlmuth (2023) available [here](https://doi.org/10.1016/j.cma.2023.116566).
 
 To ensure reproducibility, we need to consider four major factors. 
 1. The BioDynaMo repository
