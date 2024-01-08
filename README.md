@@ -24,7 +24,7 @@ up your system below.
 If you clone this repository, it might happen that the submodules are not
 cloned. E.g., if you
 ```bash
-git pull https://github.com/TobiasDuswald/bdm-angiogenesis-reproducer.git
+git clone https://github.com/TobiasDuswald/bdm-angiogenesis-reproducer.git
 cd bdm-angiogenesis-reproducer
 ls angiogenesis
 ```
